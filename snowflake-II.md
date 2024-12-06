@@ -614,6 +614,8 @@ Using Python with Snowflake offers a powerful combination for data analysis, aut
 4. Snowflake will create a file with some code in it, specially `Python` using `Snowpark`
 5. At the top of the file you'll have to select the `Database` and `Schema` you want to use
 
+
+To start:
 ```python
 import snowflake.snowpark as snowpark
 from snowflake.snowpark.functions import col, count, avg
