@@ -49,6 +49,8 @@
 
 ### Variables
 
+- A **variable** is a named storage location in programming that holds a value, which can be changed during program execution
+
 To declare variables in Python you only need to give it a name and declare it. Python has no command for declaring a variable
 
 ```python
@@ -75,6 +77,8 @@ ANOTHER_IMPORT_VARIABLE = 'The Best Course'
 ---
 
 ### Data Types
+
+- A data type defines the kind of value a variable can hold, such as integers, strings, or floating-point numbers
 
 In Python we have the following **Data Types**
 
@@ -137,6 +141,8 @@ y = 'Hello World' # this as well
 
 ### Strings
 
+- A string is a data type used to represent a sequence of characters, such as words or sentences
+
 Strings in Python are surrounded by either single or double quotes `''`/`""`
 - `'hello'` is the same as `"hello"`
 
@@ -169,6 +175,8 @@ print(f'{a} + {b} is {a+b} and not {a*b}.')
 
 **Logical Operators**
 
+- A logical operator is used to combine or modify boolean expressions, typically including `AND`, `OR`, and `NOT`
+
 |Operator|Description|Example|
 |--------|-----------|-------|
 |`and`|Returns True if both statements are true|`x < 5 and x < 10`|
@@ -186,6 +194,8 @@ print(not(x < 27 and x > 8)) # False
 <br>
 
 **Identity Operators**
+
+- Identity operators are used to check if two variables refer to the same object or have the same value, using `is` and `is not`
 
 |Operator|Description|Example|
 |--------|-----------|-------|
@@ -205,6 +215,8 @@ print(z is not y) # True
 
 **Membership Operator**
 
+- A membership operator is used to check if a value is present in a sequence, such as a list, tuple, or string, using `in` or n`ot in`
+
 |Operator|Description|Example|
 |--------|-----------|-------|
 |`in`|Returns True if a sequence with the specified value is present in the object|`x in y`|
@@ -223,6 +235,8 @@ print('course' not in y) # True
 ---
 
 ### Collections
+
+- A collection in Python is a data type that holds multiple items, such as `lists`, `tuples`, `sets`, and `dictionaries`
 
 - There is 4 collections in Python:
     - **List** is a collection which is ordered and changeable. Allows duplicate members
@@ -352,6 +366,7 @@ my_dict['year'] = 2018
 
 ### If ... Else
 
+- An `if...else` statement executes a block of code based on a condition, running one block if the condition is true and another if it's false
 - Python supports the usual **logical conditions** from mathematics
 - These conditions can be used in several ways, most commonly in `if statements` and `loops`
 
@@ -392,6 +407,8 @@ else:
 ---
 
 ### Loops
+
+- A `loop` iterates over a sequence (such as a `list`, `tuple`, or `range`) and executes a specified block of code for each item in that sequence, one by one
 
 - Python has two primitive `loop` commands:
   - `while` loops
@@ -464,7 +481,8 @@ for x in range(2, 6):
 
 ### Functions
 
-- A function is a block of code which only runs when it is called. You can pass data, known as parameters, into a function. A function can return data as a result
+- A function is a block of code which only runs when it is called. You can pass data, known as parameters, into a function
+- A function can return data as a result
 - In Python a function is defined using the `def` keyword
 
 ```python
@@ -597,69 +615,17 @@ Using Python with Snowflake offers a powerful combination for data analysis, aut
 5. At the top of the file you'll have to select the `Database` and `Schema` you want to use
 
 ```python
-# Import the needed packages
 import snowflake.snowpark as snowpark
-from snowflake.snowpark.functions import col, count
-
-# Define a function just for Python Extracting Data
-def python_queries(session: snowpark.Session): 
-    tableName = 'FXRATE'
-    dataframe = session.table(tableName)
-
-    starter = dataframe.select("base_currency", "rate_date", 'fx_rate_base_currency')
-    df = starter.filter(col("base_currency") == 'GBP')
-    df2 = starter.order_by('rate_date').limit(10000)
-    df3 = starter.group_by('base_currency', 'fx_rate_base_currency').agg(count("*").alias("row_count"))
-
-
-    # With this queries go on the Chart tab
-    # Snowflake cannot generate charts on under 1M rows, also any `limit` above 10k it takes ages to load
-    line_chart = df.group_by("rate_date").agg(avg("fx_rate_base_currency").alias("avg_rate")).sort("rate_date").limit(1000)
-    bar_chart = df.group_by("quote_currency").agg(count("*").alias("frequency")).sort(col("frequency"), ascending=False).limit(50) # change Y-Axis to `quote_currency`
-
-    # Print the entire dataframe first to show all the rows and columns available
-    dataframe.show()
-
-    # Print the other queries to show how to visualize just the columns and rows that you need
-    starter.show()
-
-    # Change the return according to what you have on `show()`
-    return dataframe
-
-
-# Define a function just for SQL Extraction Data
-def sql_queries(session: snowpark.Session):
-    select_all = session.sql("SELECT * FROM fxrate WHERE base_currency = 'GBP' LIMIT 10000")
-    select_dist = session.sql("SELECT DISTINCT base_currency FROM fxrate") # Find all unique base currencies
-    select_from = session.sql("SELECT base_currency, COUNT(*) AS count FROM fxrate GROUP BY base_currency ORDER BY count DESC") # Find the number of rows for each base currency
-    select_where = session.sql("SELECT * FROM fxrate WHERE rate_date BETWEEN '2024-01-01' AND '2024-01-31'") # Retrieve exchange rates for January 2024
-    
-    
-    # With this queries go on the Chart tab
-    # Snowflake cannot generate charts on under 1M rows, also any `limit` above 10k it takes ages to load
-    scatter_chart = session.sql("SELECT fx_rate_base_currency, fx_rate_quote_currency FROM fxrate WHERE base_currency = 'GBP' AND fx_rate_base_currency > 0.5 AND fx_rate_quote_currency > 0.5 LIMIT 10000")
-    heatgrid_chart = session.sql("SELECT base_currency, quote_currency, COUNT(*) AS frequency FROM fxrate GROUP BY base_currency, quote_currency ORDER BY frequency DESC LIMIT 10000")
-
-    # Change show and result according to the query you want to display
-    result.show()
-    
-    return result
-
-# Lastly you need a `main` function to use Snowpark and call the other functions
-def main(session: snowpark.Session):
-    python_result = python_queries(session)
-    sql_result = sql_queries(session)
-
-    return python_result
+from snowflake.snowpark.functions import col, count, avg
 ```
+- This will import the needed packages and functions needed
 
 <br>
 
----
-
-#### Why use `session: snowpark.Session`
-
-**Type Checking**
+```python
+def python_queries(session: snowpark.Session):
+```
+- This line will create a function and pass the needed parameter
 - Using `session: snowpark.Session` enables *type checking*, which:
   - Prevents Errors: If you accidentally pass an object of the wrong type, it can be flagged by your development environment (like an IDE or linter) before runtime.
   - Improves Debugging: You are explicitly specifying what kind of object the function expects, making errors easier to identify.
@@ -668,12 +634,207 @@ If you pass anything other than a `snowpark.Session` object, the code will fail 
 
 <br>
 
-#### Why use `session.sql()`
+```python
+tableName = 'FXRATE'
+dataframe = session.table(tableName)
+```
+- Here we create two variables to determine:
+  - The table name that will be used
+  - Make sure that the table is using `session` so queries ca be used with Python
 
-- The `session.sql()` method allows you to directly execute raw *SQL* queries in Snowflake
-- In this case, you're bypassing the Snowpark API and using Snowflake SQL to query the data directly
-- Snowflake executes the SQL query and returns the results as a Snowpark DataFrame
+<br>
 
+```python
+starter = dataframe.select("base_currency", "rate_date", 'fx_rate_base_currency')
+```
+- This is the first query that we create
+- It will `select` just 3 columns from all the ones available in the Dataframe (table)
 
-- `session.sql()` is for executing raw *SQL* in Snowflake, giving you full SQL capabilities
-- `DataFrame methods` allow you to interact with data programmatically using Python, following a logical query-building approach.
+<br>
+
+```python
+df = starter.filter(col("base_currency") == 'GBP')
+```
+- In here we are using the first query `starter` and adding a filter
+- This filter will only show the rows that have `GBP` in the column `base_currency`
+
+<br>
+
+```python
+df2 = starter.order_by('rate_date').limit(10000)
+```
+- This query is also using the `starter` query and ordering it by the column `rate_date`
+- This will show only the first 10k first rows
+- And it will be sorted in ascending order
+
+<br>
+
+```python
+df3 = starter.group_by('base_currency', 'fx_rate_base_currency').agg(count("*").alias("row_count"))
+```
+- This query, also using `starter`, groups 2 columns: `base_currency` and `fx_rate_base_currency`
+- Then aggregates the data from both columns by counting the number of rows in each group and labels the count as `row_count`
+- This query provides the count of rows for each unique combination of `base_currency` and `fx_rate_base_currency`
+
+<br>
+
+Next we will create 2 charts with Python
+>Remember: Snowflake cannot generate charts under 1M rows, also any `limit` above 10k it takes ages to load
+```python
+line_chart = df.group_by("rate_date").agg(avg("fx_rate_base_currency").alias("avg_rate")).sort("rate_date").limit(1000)
+```
+- This query is using the `df` query (filtering only `GBP` as our `base_currency`)
+- Then it groups the `rate_date` column, so the data is organized by date
+- It also aggregates the grouped data by calculating the average of `fx_rate_base_currency` for each date and renames the resulting column as `avg_rate`
+- It then sorts the result in ascending order and limits the output to the first 1000 rows
+- This will display a `Line Chart` after you run your code and change to the `Chart` tab and select `Line` in the Chart type box
+
+<br>
+
+```python
+bar_chart = df.group_by("quote_currency").agg(count("*").alias("frequency")).sort(col("frequency"), ascending=False).limit(50)
+```
+- This query is using the `df` query (filtering only `GBP` as our `base_currency`)
+- Then it groups the `quote_currency` column, organizing the data by each unique quote currency
+- It will also aggregates the grouped data by counting the number of rows for each `quote_currency`, and labels the result as `frequency`
+- And then sorts the result by the `frequency` column in descending order and limits the output to the top 50 rows to show the most frequent quote currencies
+- This will display a `Bar Chart` after you run your code and change to the `Chart` tab and select `Bar` in the Chart type box
+- Make sure that you change the Y-Axis to `quote_currency` in the `Chart` tab
+
+<br>
+
+```python
+dataframe.show()
+```
+- To see all the above, firstly you should use this code and show the entire table (you will see all columns and how many rows it has)
+
+<br>
+
+```python
+starter.show()
+```
+- Then you can change it for each query (e.g. `df.show()`, `bar_chart.show()`)
+
+<br>
+
+```python
+return dataframe
+```
+- Because we are using Python, we must return something
+- The something is which query name you are using with the `show()` method (e.g. `return df3`, `return line_chart.show()`)
+
+<br>
+
+Now we'll do exactly the same but with **SQL** inside a Python function
+
+```python
+def sql_queries(session: snowpark.Session):
+```
+- First we create a function for our SQL queries and pass the needed parameters
+
+<br>
+
+```python
+select_all = session.sql("SELECT * FROM fxrate WHERE base_currency = 'GBP' LIMIT 10000")
+```
+- To use SQL queries, we don't need to create variables with the table name
+- This query selects all columns from the `fxrate` table where `base_currency` is `GBP` and limits the result to the first 10k rows
+
+- Why use `session.sql()`?
+  - The `session.sql()` method allows you to directly execute raw *SQL* queries in Snowflake
+  - In this case, you're bypassing the Snowpark API and using Snowflake SQL to query the data directly
+  - Snowflake executes the SQL query and returns the results as a Snowpark DataFrame
+
+<br>
+
+```python
+select_dist = session.sql("SELECT DISTINCT base_currency FROM fxrate")
+```
+- This query will select only the unique values from the `base_currency` column, eliminating any duplicates
+- The `DISTINCT` keyword is used to return only unique values
+
+<br>
+
+```python
+select_from = session.sql("SELECT base_currency, COUNT(*) AS count FROM fxrate GROUP BY base_currency ORDER BY count DESC")
+```
+- This query selects the `base_currency` column and calculates the count of rows for each unique `base_currency`, labeling the result as `count`
+- The results are grouped by `base_currency` and then sorted by the `count` in descending order to show the most frequent base currencies first
+- Mainly this query finds the number of rows for each base currency
+
+<br>
+
+```python
+select_where = session.sql("SELECT * FROM fxrate WHERE rate_date BETWEEN '2024-01-01' AND '2024-01-31'")
+```
+- This query is selecting all columns from the `fxrate` table
+- Then filters the rows where the `rate_date` fall within the date range from 1 Jan 2024 to 31 Jan 2024
+
+<br>
+
+Now we will create 2 charts with SQL queries
+>Remember: Snowflake cannot generate charts under 1M rows, also any `limit` above 10k it takes ages to load
+```python
+scatter_chart = session.sql("SELECT fx_rate_base_currency, fx_rate_quote_currency FROM fxrate WHERE base_currency = 'GBP' AND fx_rate_base_currency > 0.5 AND fx_rate_quote_currency > 0.5 LIMIT 10000")
+```
+- This query selects the `fx_rate_base_currency` and `fx_rate_quote_currency` columns from `fxrate` table
+- Then filters the rows where `base_currency` is `GBP`, and both `fx_rate_base_currency` and `fx_rate_quote_currency` are greater than 0.5, limiting the result to the first 10k rows
+- This will display a `Scatter Plot Chart` after you run your code and change to the `Chart` tab and select `Scatter` in the Chart type box
+
+<br>
+
+```python
+heatgrid_chart = session.sql("SELECT base_currency, quote_currency, COUNT(*) AS frequency FROM fxrate GROUP BY base_currency, quote_currency ORDER BY frequency DESC LIMIT 10000")
+```
+- This query selects the `base_currency`, `quote_currency`, and counts the occurrences of each unique combination, labeling the count as `frequency`
+- Then groups the results by `base_currency` and `quote_currency`, ordering them by the `frequency` in descending order, and limits the result to the first 10k rows
+- This will display a `Heatgrid Chart` after you run your code and change to the `Chart` tab and select `Heatgrid` in the Chart type box
+
+<br>
+
+As before, to see all the above displayed you must use:
+```python
+result.show()
+
+return result
+```
+- You can change the variable according to the query you want to display (e.g. `select_where.show()`, `return select_where`)
+
+<br>
+
+Lastly you need a `main` function to use Snowpark and call the other functions
+
+```python
+def main(session: snowpark.Session):
+```
+- Here we create the `main` function passing the needed parameter
+- If we don't have a main function, snowflake will raise an error
+
+<br>
+
+```python
+python_result = python_queries(session)
+```
+- Here create a variable called `python_result`
+- Then we assign the Python queries function to it and pass the `session` argument
+- We need to pass `session` as an argument because it establishes the connection to Snowflake, allowing the function to interact with the database
+
+<br>
+
+```python
+sql_result = sql_queries(session)
+```
+- Here we do the same for our SQL function
+- Also passing `session` as an argument
+
+<br>
+
+```python
+return python_result
+```
+- Finally we need to return one of the variables that we create above
+- You can keep change between `python_result` and `sql_result` to visualise the queries from both
+
+<br>
+
+---
