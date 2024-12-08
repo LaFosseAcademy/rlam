@@ -52,6 +52,7 @@
 <br>
 
 - **Explain** that we're going to look at lots of the component parts of Python and then we're going to use some of these when we transfer to **Snowflake**
+- **Explain** that today will be a whistle-stop tour - we won't necessarily use all of these component parts but it is good to start to get your head around them!
 
 ---
 
@@ -158,7 +159,8 @@ Strings in Python are surrounded by either single or double quotes `''`/`""`
 
 <br>
 
-You can use `String Literal` or `f-string`, this is a type of `String Concatenation` (concatenate, or combine, two or more strings)
+- There are all sorts of clever things that we can do with Strings - **string literals** are one of these...
+- You can use `String Literal` or `f-string`, this is a type of `String Concatenation` (concatenate, or combine, two or more strings)
 
 
 ```python
@@ -248,7 +250,7 @@ print('course' not in y) # True
 
 - A collection in Python is a data type that holds multiple items, such as `lists`, `tuples`, `sets`, and `dictionaries`
 
-- There is 4 collections in Python:
+- There are 4 collections in Python:
     - **List** is a collection which is ordered and changeable. Allows duplicate members
     - **Tuple** is a collection which is ordered and unchangeable. Allows duplicate members
     - **Set** is a collection which is unordered, *unchangeable*, and unindexed. No duplicate members. (Set *items* are unchangeable, but you can remove and/or add items whenever you like.)
@@ -356,7 +358,7 @@ my_dict = {
 }
 
 if 'model' in my_dict:
-  print('Yes, the "mode" is one of the keys in the dictionary')
+  print('Yes, the "model" is one of the keys in the dictionary')
 ```
 
 You can change the value of a specific item by referring to its key name:
