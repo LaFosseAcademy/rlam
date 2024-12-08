@@ -1,5 +1,11 @@
 # Snowflake 2.0
 
+## Session Intro
+
+- **Explain** that we're going to look at the basics of **Python** and **Snowflake**
+- **Explain** that by the end of the session - everyone should be able to create simple visuals on **Snowflake**
+- **Point out** that we are also going to use some **SQL** in the session which is something that we've been told you're already familiar with
+
 ## Intro to Python
 
 - Python is a high-level, general-purpose programming language that lets you work quickly and integrate systems more effectively. Its design philosophy emphasizes code readability with the use of significant indentation
@@ -14,7 +20,7 @@
     - be used on a server to create web applications
     - be used alongside software to create workflows
     - connect to database systems. It can also read and modify files
-    - be used to handle big data and perform complex mathematics
+    - **be used to handle big data and perform complex mathematics**
     - be used for rapid prototyping, or for production-ready software development
 
 ### Why Python?
@@ -45,11 +51,15 @@
 
 <br>
 
+- **Explain** that we're going to look at lots of the component parts of Python and then we're going to use some of these when we transfer to **Snowflake**
+
 ---
 
 ### Variables
 
+- When we code we often need to store information somewhere...
 - A **variable** is a named storage location in programming that holds a value, which can be changed during program execution
+- Consider a program that calculates the area of a square - if we stored the length of a side in a variable we would simply need to alter the value of that variable to get the new area of the square rather than writing out the program again
 
 To declare variables in Python you only need to give it a name and declare it. Python has no command for declaring a variable
 
@@ -65,7 +75,7 @@ print(name, age, x, y)
 
 <br>
 
-Variables in Python follow `snake_case` convention. If you want to set a `const` (immutable variable), just use capitalized letter
+Variables in Python follow `snake_case` convention. If you want to set a `const` (immutable variable), just use capitalized letter (this is a convention - it doesn't actually change the behaviour of the variable)
 
 ```python
 IMPORTANT_VARIABLE = 'La Fosse Academy'
