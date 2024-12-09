@@ -636,7 +636,7 @@ Using Python with Snowflake offers a powerful combination for data analysis, aut
 
 ### Using Snowpark on Snowflake Dashboard
 
-- There are some `methods` that are only available for `Python` on **Snowflake**
+- Like we saw earlier when we looked at strings, there are some `methods` that are only available for `Python` on **Snowflake**
 - To use or `transform` Python code with Snowpark you can use these:
 
 |Method|Explanation|
