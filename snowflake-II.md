@@ -181,6 +181,46 @@ print(f'{a} + {b} is {a+b} and not {a*b}.')
 # 5 + 7 is 12 and not 35.
 ```
 
+**Methods**
+
+- **Explain** that in Python, methods are functions that are associated with an object and can manipulate its data or perform actions on it
+- **Methods** are called using dot notation, with the object name followed by a period and the method name
+
+String has these `methods`:
+
+|Method|Description|
+|------|-----------|
+|`capitalize()`| Converts the first character to upper case|
+|`count()`| Returns the number of times a specified value occurs in a string|
+|`endswith()`| Returns true if the string ends with the specified value|
+|`find()`| Searches the string for a specified value and returns the position of where it was found|
+|`format()`| Formats specified values in a string|
+|`index()`|	Searches the string for a specified value and returns the position of where it was found|
+|`islower()`| Returns True if all characters in the string are lower case|
+|`isnumeric()`|	Returns True if all characters in the string are numeric|
+|`isupper()`| Returns True if all characters in the string are upper case|
+|`join()`| Joins the elements of an iterable to the end of the string|
+|`lower()`|	Converts a string into lower case|
+|`replace()`| Returns a string where a specified value is replaced with a specified value|
+|`split()`|	Splits the string at the specified separator, and returns a list|
+|`startswith()`| Returns true if the string starts with the specified value|
+|`strip()`|	Returns a trimmed version of the string|
+|`swapcase()`| Swaps cases, lower case becomes upper case and vice versa|
+|`title()`|	Converts the first character of each word to upper case|
+|`upper()`|	Converts a string into upper case|
+
+- **Demonstrate** a few of these - it's important that we get a sense of how methods work as we're going to use them later
+
+```python
+x = 'simon'
+print(x.capitalize())
+```
+
+```python
+x = 'simon clemson`
+print(x.count('o')
+```
+
 <br>
 
 --- 
