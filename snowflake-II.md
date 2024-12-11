@@ -30,18 +30,7 @@
 
 ## Coding with Python
 
-- How to use Jupyter Notebook on Codespace
-
-1. Go to GitHub [Codespace](https://github.com/codespaces)
-2. Then select `Use this template` under `Jupyter Notebook`
-3. On the left hand side, click `notebooks`
-4. Create a new file `index.ipynb`
-5. On the new file click on `+ Code` (this will open a cell)
-6. Write `import this` and use `shift + enter`
-7. That will open a `kernel`
-8. Select `Python Environments...`
-9. Select `Python 3.12.1`
-10. Run the cell again (`shift + enter`)
+- Use Snowflake
 
 <br>
 
