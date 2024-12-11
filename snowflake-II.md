@@ -888,14 +888,16 @@ return daily_avg
 - Move to the `Chart` tab
 - Select `Line` as the Chart type
 - Under `Data`
-  - First drop down: `DAILY_AVG_RATE` - select average
-  - Second drop down (X-Axis): `RATE_DAY`
+  - First drop down: `DAILY_AVG_RATE` - select average under
+  - Second drop down (X-Axis): `RATE_DAY` - select none under
 - Under `Appearance`, check:
-  - Show points
+  - Label X-Axis
+  - Label Y-Axis
+  - Crop Y Axis
 - Increase the size of the chart if needed by dragging the tab up
 
 
-In this `Chart` we can see that the rate didn't fluctuate much, but there is some days with no data, which can be weekends
+In this `Chart` we can see that how the rate `USDGBP` fluctuate during the month of January
 
 <br>
 
