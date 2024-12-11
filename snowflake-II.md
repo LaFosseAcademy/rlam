@@ -618,9 +618,14 @@ Using Python with Snowflake offers a powerful combination for data analysis, aut
 To start:
 ```python
 import snowflake.snowpark as snowpark
-from snowflake.snowpark.functions import col, count, avg
+from snowflake.snowpark.functions import col
 ```
 - This will import the needed packages and functions needed
+
+We'll also need to import other functions to use later on
+```python
+from snowflake.snowpark.functions import col, avg, date_trunc, round, count
+```
 
 <br>
 
@@ -647,101 +652,9 @@ dataframe = session.table(tableName)
 <br>
 
 ```python
-starter = dataframe.select("base_currency", "rate_date", 'fx_rate_base_currency')
+starter = session.sql()
 ```
-- This is the first query that we create
-- It will `select` just 3 columns from all the ones available in the Dataframe (table)
-
-<br>
-
-```python
-df = starter.filter(col("base_currency") == 'GBP')
-```
-- In here we are using the first query `starter` and adding a filter
-- This filter will only show the rows that have `GBP` in the column `base_currency`
-
-<br>
-
-```python
-df2 = starter.order_by('rate_date').limit(10000)
-```
-- This query is also using the `starter` query and ordering it by the column `rate_date`
-- This will show only the first 10k first rows
-- And it will be sorted in ascending order
-
-<br>
-
-```python
-df3 = starter.group_by('base_currency', 'fx_rate_base_currency').agg(count("*").alias("row_count"))
-```
-- This query, also using `starter`, groups 2 columns: `base_currency` and `fx_rate_base_currency`
-- Then aggregates the data from both columns by counting the number of rows in each group and labels the count as `row_count`
-- This query provides the count of rows for each unique combination of `base_currency` and `fx_rate_base_currency`
-
-<br>
-
-Next we will create 2 charts with Python
->Remember: Snowflake cannot generate charts under 1M rows, also any `limit` above 10k it takes ages to load
-```python
-line_chart = df.group_by("rate_date").agg(avg("fx_rate_base_currency").alias("avg_rate")).sort("rate_date").limit(1000)
-```
-- This query is using the `df` query (filtering only `GBP` as our `base_currency`)
-- Then it groups the `rate_date` column, so the data is organized by date
-- It also aggregates the grouped data by calculating the average of `fx_rate_base_currency` for each date and renames the resulting column as `avg_rate`
-- It then sorts the result in ascending order and limits the output to the first 1000 rows
-- This will display a `Line Chart` after you run your code and change to the `Chart` tab and select `Line` in the Chart type box
-
-<br>
-
-```python
-bar_chart = df.group_by("quote_currency").agg(count("*").alias("frequency")).sort(col("frequency"), ascending=False).limit(50)
-```
-- This query is using the `df` query (filtering only `GBP` as our `base_currency`)
-- Then it groups the `quote_currency` column, organizing the data by each unique quote currency
-- It will also aggregates the grouped data by counting the number of rows for each `quote_currency`, and labels the result as `frequency`
-- And then sorts the result by the `frequency` column in descending order and limits the output to the top 50 rows to show the most frequent quote currencies
-- This will display a `Bar Chart` after you run your code and change to the `Chart` tab and select `Bar` in the Chart type box
-- Make sure that you change the Y-Axis to `quote_currency` in the `Chart` tab
-
-<br>
-
-```python
-dataframe.show()
-```
-- To see all the above, firstly you should use this code and show the entire table (you will see all columns and how many rows it has)
-
-<br>
-
-```python
-starter.show()
-```
-- Then you can change it for each query (e.g. `df.show()`, `bar_chart.show()`)
-
-<br>
-
-```python
-return dataframe
-```
-- Because we are using Python, we must return something
-- The something is which query name you are using with the `show()` method (e.g. `return df3`, `return line_chart.show()`)
-
-<br>
-
-Now we'll do exactly the same but with **SQL** inside a Python function
-
-```python
-def sql_queries(session: snowpark.Session):
-```
-- First we create a function for our SQL queries and pass the needed parameters
-
-<br>
-
-```python
-select_all = session.sql("SELECT * FROM fxrate WHERE base_currency = 'GBP' LIMIT 10000")
-```
-- To use SQL queries, we don't need to create variables with the table name
-- This query selects all columns from the `fxrate` table where `base_currency` is `GBP` and limits the result to the first 10k rows
-
+- Here we'll start with SQL, to trim our database
 - Why use `session.sql()`?
   - The `session.sql()` method allows you to directly execute raw *SQL* queries in Snowflake
   - In this case, you're bypassing the Snowpark API and using Snowflake SQL to query the data directly
@@ -750,93 +663,357 @@ select_all = session.sql("SELECT * FROM fxrate WHERE base_currency = 'GBP' LIMIT
 <br>
 
 ```python
-select_dist = session.sql("SELECT DISTINCT base_currency FROM fxrate")
+starter = session.sql(SELECT * FROM fxrate)
 ```
-- This query will select only the unique values from the `base_currency` column, eliminating any duplicates
-- The `DISTINCT` keyword is used to return only unique values
+- The first SQL query that we'll use is select
+- In this instance we are `selecting` all columns and rows
+- This is important to start the trimming
 
 <br>
 
 ```python
-select_from = session.sql("SELECT base_currency, COUNT(*) AS count FROM fxrate GROUP BY base_currency ORDER BY count DESC")
+starter.show()
+
+return starter
 ```
-- This query selects the `base_currency` column and calculates the count of rows for each unique `base_currency`, labeling the result as `count`
-- The results are grouped by `base_currency` and then sorted by the `count` in descending order to show the most frequent base currencies first
-- Mainly this query finds the number of rows for each base currency
+- This two commands will show the results from the above query
+
+<br>
+
+Now that we now all the columns that we have available, we can improve our SQL query
+```python
+starter = session.sql("""
+  SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+  FROM fxrate
+""")
+```
+- In here we are `selecting` only the columns that we will need
+- We also need to inform SQL from which table these columns are coming from `FROM fxrate`
+- We are using `"""` to have our SQL queries in different lines, so the code looks clean and easy to read
+- Run the query again to show the new query
 
 <br>
 
 ```python
-select_where = session.sql("SELECT * FROM fxrate WHERE rate_date BETWEEN '2024-01-01' AND '2024-01-31'")
+WHERE currency_pair = 'USDGBP'
 ```
-- This query is selecting all columns from the `fxrate` table
-- Then filters the rows where the `rate_date` fall within the date range from 1 Jan 2024 to 31 Jan 2024
-
-<br>
-
-Now we will create 2 charts with SQL queries
->Remember: Snowflake cannot generate charts under 1M rows, also any `limit` above 10k it takes ages to load
-```python
-scatter_chart = session.sql("SELECT fx_rate_base_currency, fx_rate_quote_currency FROM fxrate WHERE base_currency = 'GBP' AND fx_rate_base_currency > 0.5 AND fx_rate_quote_currency > 0.5 LIMIT 10000")
-```
-- This query selects the `fx_rate_base_currency` and `fx_rate_quote_currency` columns from `fxrate` table
-- Then filters the rows where `base_currency` is `GBP`, and both `fx_rate_base_currency` and `fx_rate_quote_currency` are greater than 0.5, limiting the result to the first 10k rows
-- This will display a `Scatter Plot Chart` after you run your code and change to the `Chart` tab and select `Scatter` in the Chart type box
+- After `FROM` we can add `WHERE` to limit our results
+- Here we want to see only exchanges between `USD` and `GBP`
+- For that we use the keyword `WHERE` followed by the column name `currency_pair` and the currency `USDGBP`
 
 <br>
 
 ```python
-heatgrid_chart = session.sql("SELECT base_currency, quote_currency, COUNT(*) AS frequency FROM fxrate GROUP BY base_currency, quote_currency ORDER BY frequency DESC LIMIT 10000")
+AND rate_date
+BETWEEN '2024-01-01' AND '2024-01-31'
 ```
-- This query selects the `base_currency`, `quote_currency`, and counts the occurrences of each unique combination, labeling the count as `frequency`
-- Then groups the results by `base_currency` and `quote_currency`, ordering them by the `frequency` in descending order, and limits the result to the first 10k rows
-- This will display a `Heatgrid Chart` after you run your code and change to the `Chart` tab and select `Heatgrid` in the Chart type box
+- After `WHERE` we use another SQL keywords `AND` & `BETWEEN`
+- This keywords combined improve our results
+- With those we can check the column `rate_date` and select specific dates for our analysis
 
 <br>
 
-As before, to see all the above displayed you must use:
+Complete SQL query
 ```python
-result.show()
-
-return result
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+    WHERE currency_pair = 'USDGBP'
+    AND rate_date 
+    BETWEEN '2024-01-01' AND '2024-01-31'
+""")
 ```
-- You can change the variable according to the query you want to display (e.g. `select_where.show()`, `return select_where`)
+- Run this code again to see the result
 
 <br>
 
-Lastly you need a `main` function to use Snowpark and call the other functions
-
+Now that we trimmed our table, let's do some further analysis with Python
+- For this first analysis, we need to change our SQL query:
 ```python
-def main(session: snowpark.Session):
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+""")
 ```
-- Here we create the `main` function passing the needed parameter
-- If we don't have a main function, snowflake will raise an error
+
+<br>
+
+The first analysis is to see the `most frequent currency against which base currency is measured`
+```python
+quote_curr = (
+    starter
+    .group_by('quote_currency')
+)
+```
+- First we create a variable `quote_curr`
+- Then we use our SQL variable `starter`
+- For Python queries we will use some of the methods that Snowflake has available
+- In this case it will be `group_by`, then we pass which column we want to group `quote_currency`
 
 <br>
 
 ```python
-python_result = python_queries(session)
+.agg(count('*').alias('frequency'))
 ```
-- Here create a variable called `python_result`
-- Then we assign the Python queries function to it and pass the `session` argument
-- We need to pass `session` as an argument because it establishes the connection to Snowflake, allowing the function to interact with the database
+- After `group_by`, we use `agg` and `count` 
+- `count` is a Snowpark function that was imported in the second line
+- `count` will count all `'*'` `quote_currency` and will aggregate all of them
+- Then we create an `alias` called `frequency`
 
 <br>
 
 ```python
-sql_result = sql_queries(session)
+.sort(col('frequency'), ascending=False)
 ```
-- Here we do the same for our SQL function
-- Also passing `session` as an argument
+- Finally we use the `sort` method
+- We want to sort our `col` (another Snowpark function) `frequency`
+- And we want it to show from the most `quote_currency` used to the least (`ascending=False`)
 
 <br>
 
+Complete query
 ```python
-return python_result
+quote_curr = (
+    starter
+    .group_by('quote_currency')
+    .agg(count('*').alias('frequency'))
+    .sort(col('frequency'), ascending=False)
+)
 ```
-- Finally we need to return one of the variables that we create above
-- You can keep change between `python_result` and `sql_result` to visualise the queries from both
+
+<br>
+
+To see the results, use:
+```python
+quote_curr.show()
+
+return quote_curr
+```
+
+- Move to the `Chart` tab
+- Select `Bar` as the Chart type
+- Under `Data`
+  - First drop down: `FREQUENCY`
+  - Second drop down: `QUOTE_CURRENCY` for the `Y-Axis`
+- Under `Appearance`
+  - Orientation: first option
+  - Order bars by: `Bar size`
+  - Order direction: `Descending`
+  - Series direction: `Descending`
+
+
+In this `Chart` we can see that the most used currency is `XAU`
 
 <br>
 
 ---
+
+<br>
+
+The second analysis is to see the `rate of exchange between GBP and USD across a month`
+
+For this analysis, we'll need the entire SQL query
+```python
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+    WHERE currency_pair = 'USDGBP'
+    AND rate_date 
+    BETWEEN '2024-01-01' AND '2024-01-31'
+""")
+```
+
+<br>
+
+```python
+daily_avg = (
+    starter
+    .select(
+        col('base_currency'),
+        col('currency_pair'),
+        col('fx_rate_base_currency'),
+        date_trunc('DAY', col('rate_date')).alias('rate_day')
+    )
+)
+```
+- We create a new variable `daily_avg`
+- Then we use our SQL query `starter` and use the `select` method
+- For this query we are `selecting` three columns: `base_currency`, `currency_pair` and `fx_rate_base_currency`
+- Make sure to use the `col` function, so Python (Snowpark) knows that we are referencing columns
+- Then we use another Snowpark function called `date_trunc`
+- `date_trunc` is commonly used for grouping data by specific date units, in this case we want to group by `DAY`
+- We use `DAY` because there is many occurrences throughout the day and we want to make sure it only shows one day at the time
+- Then we pass from which column this date is coming from `col('rate_date')`
+- Finally we use an `alias` to make it simple to understand: `rate_day`
+
+<br>
+
+```python
+.group_by("base_currency", "currency_pair", "rate_day")
+```
+- Here we are using `group_by`, which organizes the data into groups based on these specified columns
+
+<br>
+
+```python
+.agg(round(avg("fx_rate_base_currency"), 3).alias("daily_avg_rate"))
+```
+- This query performs an aggregation on the grouped data to calculate the average of the `fx_rate_base_currency` column for each group
+- The `round()` Snowpark function ensures the average value is rounded to 3 decimal places for precision
+- And the resulting column is renamed to `daily_avg_rate` using the alias method
+
+<br>
+
+```python
+.sort("rate_day")
+```
+- Finally we use the `sort` method to show our results in ascending order
+
+<br>
+
+Complete query
+```python
+daily_avg = (
+    starter
+    .select(
+        col('base_currency'),
+        col('currency_pair'),
+        col('fx_rate_base_currency'),
+        date_trunc('DAY', col('rate_date')).alias('rate_day')
+    )
+    .group_by("base_currency", "currency_pair", "rate_day")
+    .agg(round(avg("fx_rate_base_currency"), 3).alias("daily_avg_rate"))
+    .sort("rate_day")
+)
+```
+
+<br>
+
+To see the results, use:
+```python
+daily_avg.show()
+
+return daily_avg
+```
+
+- Move to the `Chart` tab
+- Select `Line` as the Chart type
+- Under `Data`
+  - First drop down: `DAILY_AVG_RATE` - select average
+  - Second drop down: `RATE_DAY` for the `X-Axis`
+- Under `Appearance`, check:
+  - Show points
+- Increase the size of the chart if needed by dragging the tab up
+
+
+In this `Chart` we can see that the rate didn't fluctuate much, but there is some days with no data, which can lead to further investigation
+
+<br>
+
+---
+
+<br>
+
+The third analysis is to see the `performance of the USD against three other currencies`
+
+For this analysis, we'll need this SQL query
+```python
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+""")
+```
+
+<br>
+
+```python
+usd_against = (
+    starter
+    .select(
+        col('base_currency'),
+        col('quote_currency'),
+        col('fx_rate_base_currency')
+    )
+```
+- As before we create a variable `usd_against`, use our SQL query `starter` and then `select()` the columns we want to use
+
+<br>
+
+```python
+.where(
+    (col('base_currency') == 'USD') 
+    & ((col('quote_currency') == 'EUR') 
+    | (col('quote_currency') == 'CAD')
+    | (col('quote_currency') == 'NLG'))
+) 
+```
+- This `where` condition filters rows in the DataFrame based on these criteria:
+  - It selects the `base_currency` column and the base is `USD`
+  - The condition uses the `&` operator for logical "AND" between `base_currency` and the combined conditions for `quote_currency`
+    - This means that we want the `base_currency` AND something else (in this case `quote_currency`)
+  - The `|` operator is used for logical "OR" to allow any of the three specified `quote_currency` values
+- Mainly this query is used to extract data for `USD` currency conversions specifically to `EUR` (Euro), `CAD` (Canadian), or `NLG` (Dutch Guilder)
+
+<br>
+
+```python
+.group_by('base_currency', 'quote_currency')
+```
+- This is grouping the columns that we want to be displayed
+
+<br>
+
+```python
+agg(round(avg('fx_rate_base_currency'), 3).alias('avg_rate'))
+```
+- Here the `agg()` function is used to perform aggregation on the specified column `fx_rate_base_currency`
+- Then it calculates the average (`avg()`) of the `fx_rate_base_currency` values
+- Finally the result is rounded to 3 decimal places using `round()` and is given an alias of `avg_rate`
+
+<br>
+
+Complete query
+```python
+usd_against = (
+    starter
+    .select(
+        col('base_currency'),
+        col('quote_currency'),
+        col('fx_rate_base_currency')
+    )
+    .where(
+        (col('base_currency') == 'USD') 
+        & ((col('quote_currency') == 'EUR') 
+        | (col('quote_currency') == 'CAD')
+        | (col('quote_currency') == 'NLG'))
+    ) 
+    .group_by('base_currency', 'quote_currency')
+    .agg(round(avg('fx_rate_base_currency'), 3).alias('avg_rate'))
+)
+```
+
+<br>
+
+To see the results, use:
+```python
+usd_against.show()
+
+return usd_against
+```
+
+- Move to the `Chart` tab
+- Select `Bar` as the Chart type
+- Under `Data`
+  - First drop down: `AVG_RATE` - select average
+  - Second drop down: `QUOTE_CURRENCY` for the `X-Axis`
+- Under `Appearance`
+  - Orientation: second option
+  - Order bars by: `Bar size`
+  - Order direction: `Ascending`
+  - Series direction: `Ascending`
+- Increase the size of the chart if needed by dragging the tab up
+- You can also check the labels under `Appearance`
+
+
+In this `Chart` we can see the quote values of USD against EUR, CAD, and NLG
+
