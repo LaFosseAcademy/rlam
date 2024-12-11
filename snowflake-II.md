@@ -783,7 +783,7 @@ return quote_curr
 - Select `Bar` as the Chart type
 - Under `Data`
   - First drop down: `FREQUENCY`
-  - Second drop down: `QUOTE_CURRENCY` for the `Y-Axis`
+  - Second drop down (Y-Axis): `QUOTE_CURRENCY`
 - Under `Appearance`
   - Orientation: first option
   - Order bars by: `Bar size`
@@ -889,13 +889,13 @@ return daily_avg
 - Select `Line` as the Chart type
 - Under `Data`
   - First drop down: `DAILY_AVG_RATE` - select average
-  - Second drop down: `RATE_DAY` for the `X-Axis`
+  - Second drop down (X-Axis): `RATE_DAY`
 - Under `Appearance`, check:
   - Show points
 - Increase the size of the chart if needed by dragging the tab up
 
 
-In this `Chart` we can see that the rate didn't fluctuate much, but there is some days with no data, which can lead to further investigation
+In this `Chart` we can see that the rate didn't fluctuate much, but there is some days with no data, which can be weekends
 
 <br>
 
@@ -903,13 +903,15 @@ In this `Chart` we can see that the rate didn't fluctuate much, but there is som
 
 <br>
 
-The third analysis is to see the `performance of the USD against three other currencies`
+The third analysis is to see the `performance of the USD against other currencies`
 
 For this analysis, we'll need this SQL query
 ```python
 starter = session.sql("""
     SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
     FROM fxrate
+    WHERE rate_date
+    BETWEEN '2022-01-01' AND '2024-12-31'
 """)
 ```
 
@@ -921,10 +923,14 @@ usd_against = (
     .select(
         col('base_currency'),
         col('quote_currency'),
-        col('fx_rate_base_currency')
+        col('fx_rate_base_currency'),
+        date_trunc('DAY', col('rate_date')).alias('rate_day')
     )
+)
 ```
 - As before we create a variable `usd_against`, use our SQL query `starter` and then `select()` the columns we want to use
+- Here we use `date_trunc` again for grouping the data by `DAY`
+- We use `DAY` because there is many occurrences throughout the day and we want to make sure it only shows one day at the time
 
 <br>
 
@@ -932,8 +938,9 @@ usd_against = (
 .where(
     (col('base_currency') == 'USD') 
     & ((col('quote_currency') == 'EUR') 
-    | (col('quote_currency') == 'CAD')
-    | (col('quote_currency') == 'NLG'))
+    | (col('quote_currency') == 'GBP')
+    | (col('quote_currency') == 'IEP')
+    | (col('quote_currency') == 'CHF'))
 ) 
 ```
 - This `where` condition filters rows in the DataFrame based on these criteria:
@@ -941,12 +948,12 @@ usd_against = (
   - The condition uses the `&` operator for logical "AND" between `base_currency` and the combined conditions for `quote_currency`
     - This means that we want the `base_currency` AND something else (in this case `quote_currency`)
   - The `|` operator is used for logical "OR" to allow any of the three specified `quote_currency` values
-- Mainly this query is used to extract data for `USD` currency conversions specifically to `EUR` (Euro), `CAD` (Canadian), or `NLG` (Dutch Guilder)
+- Mainly this query is used to extract data for `USD` currency conversions specifically to `EUR` (Euro), `GBP` (Pounds), `IEP` (Irish Pounds), and `CHF` (Swiss Franc)
 
 <br>
 
 ```python
-.group_by('base_currency', 'quote_currency')
+.group_by('base_currency', 'quote_currency', 'rate_day')
 ```
 - This is grouping the columns that we want to be displayed
 
@@ -957,7 +964,14 @@ agg(round(avg('fx_rate_base_currency'), 3).alias('avg_rate'))
 ```
 - Here the `agg()` function is used to perform aggregation on the specified column `fx_rate_base_currency`
 - Then it calculates the average (`avg()`) of the `fx_rate_base_currency` values
-- Finally the result is rounded to 3 decimal places using `round()` and is given an alias of `avg_rate`
+- The result is rounded to 3 decimal places using `round()` and is given an alias of `avg_rate`
+
+<br>
+
+```python
+.sort("rate_day")
+```
+- Finally we use the `sort` method to show our results in ascending order
 
 <br>
 
@@ -968,16 +982,19 @@ usd_against = (
     .select(
         col('base_currency'),
         col('quote_currency'),
-        col('fx_rate_base_currency')
+        col('fx_rate_base_currency'),
+        date_trunc('DAY', col('rate_date')).alias('rate_day')
     )
     .where(
         (col('base_currency') == 'USD') 
         & ((col('quote_currency') == 'EUR') 
-        | (col('quote_currency') == 'CAD')
-        | (col('quote_currency') == 'NLG'))
+        | (col('quote_currency') == 'GBP')
+        | (col('quote_currency') == 'IEP')
+        | (col('quote_currency') == 'CHF'))
     ) 
-    .group_by('base_currency', 'quote_currency')
+    .group_by('base_currency', 'quote_currency', 'rate_day')
     .agg(round(avg('fx_rate_base_currency'), 3).alias('avg_rate'))
+    .sort("rate_day")
 )
 ```
 
@@ -991,18 +1008,17 @@ return usd_against
 ```
 
 - Move to the `Chart` tab
-- Select `Bar` as the Chart type
+- Select `Line` as the Chart type
 - Under `Data`
   - First drop down: `AVG_RATE` - select average
-  - Second drop down: `QUOTE_CURRENCY` for the `X-Axis`
-- Under `Appearance`
-  - Orientation: second option
-  - Order bars by: `Bar size`
-  - Order direction: `Ascending`
-  - Series direction: `Ascending`
+  - Second drop down (Series): `QUOTE_CURRENCY` (if you cannot see it, just add a new column)
+  - Third drop down (X-axis): `RATE_DAY` - none
+- Under `Appearance`, check:
+  - Show Legend
+  - Label X-Axis
+  - Label Y-Axis
+  - Crop Y Axis
 - Increase the size of the chart if needed by dragging the tab up
-- You can also check the labels under `Appearance`
 
-
-In this `Chart` we can see the quote values of USD against EUR, CAD, and NLG
+In this `Chart` we can see the quote values of USD against EUR, GBP, IEP, and CHF
 
