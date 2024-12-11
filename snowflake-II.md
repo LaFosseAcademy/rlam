@@ -1020,5 +1020,5 @@ return usd_against
   - Crop Y Axis
 - Increase the size of the chart if needed by dragging the tab up
 
-In this `Chart` we can see the quote values of USD against EUR, GBP, IEP, and CHF
+In this `Chart` we can see the quote values of USD against EUR, GBP, IEP, and CHF from 2022 to 2024.
 
