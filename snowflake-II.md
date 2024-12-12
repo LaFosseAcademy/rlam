@@ -652,7 +652,7 @@ starter = session.sql()
 <br>
 
 ```python
-starter = session.sql(SELECT * FROM fxrate)
+starter = session.sql("SELECT * FROM fxrate")
 ```
 - The first SQL query that we'll use is select
 - In this instance we are `selecting` all columns and rows
@@ -747,7 +747,7 @@ quote_curr = (
 - After `group_by`, we use `agg` and `count` 
 - `count` is a Snowpark function that was imported in the second line
 - `count` will count all `'*'` `quote_currency` and will aggregate all of them
-- Then we create an `alias` called `frequency`
+- Then we create an `alias` called `frequency`, that will became a new column with the `agg()` values
 
 <br>
 
@@ -778,6 +778,9 @@ quote_curr.show()
 
 return quote_curr
 ```
+- `.show()` must be used when quoting with Python, otherwise you'll get an error about not returning a DataFrame
+
+<br>
 
 - Move to the `Chart` tab
 - Select `Bar` as the Chart type
@@ -897,7 +900,7 @@ return daily_avg
 - Increase the size of the chart if needed by dragging the tab up
 
 
-In this `Chart` we can see that how the rate `USDGBP` fluctuate during the month of January
+In this `Chart` we can see how the rate `USDGBP` fluctuate during the month of January
 
 <br>
 
@@ -912,8 +915,6 @@ For this analysis, we'll need this SQL query
 starter = session.sql("""
     SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
     FROM fxrate
-    WHERE rate_date
-    BETWEEN '2022-01-01' AND '2024-12-31'
 """)
 ```
 
