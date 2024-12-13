@@ -1025,3 +1025,281 @@ return usd_against
 
 In this `Chart` we can see the quote values of USD against EUR, GBP, IEP, and CHF from 2022 to 2024.
 
+<br>
+
+---
+
+<br>
+
+In case Matplotlib is required, here are some notes
+
+- Use GitHub [Codespace](https://github.com/codespaces)
+- Create a new Jupyter Notebook
+- In the codespace:
+  - Create a new file with the extension `ipynb` inside the `notebooks` folder
+- Select `+ Code` to create a new cell to code
+
+<br>
+
+
+```python
+import matplotlib.pyplot as plt
+```
+- Import Matplotlib
+- Run the cell with `shift + enter`
+- This will open a tab to select an environment
+  - Select `Python 3.12.1`
+- Run the cell again
+
+<br>
+
+```python
+days = [1, 2, 3, 4, 5, 8, 9, 10, 11, 12]
+avg_rate = [0.783, 0.791, 0.79, 0.786, 0.783, 0.783, 0.786, 0.784, 0.786, 0.783]
+```
+- Create dummy data from the original database
+- This is 2 weeks (excluding weekends) of average rate between USD & GBP
+
+<br>
+
+```python
+plt.figure(figsize=(8, 5))
+```
+- Using `plt` (Matplotlib alias) we can start creating a graph
+- This creates a figure with a size of 8 inches wide and 5 inches tall
+
+<br>
+
+```python
+plt.plot(days, avg_rate, marker='o', color='darkorange')
+```
+- This line plots a line graph of `avg_rate` against days with orange circles marking each data point
+- In Matplotlib, the `plt.plot()` function creates a line chart by default because it is designed to connect the data points sequentially with straight lines unless specified otherwise
+- If type of chart are needed, it would be necessary to specify it explicitly, such as using `plt.scatter()` for a scatter plot or `plt.bar()` for a bar chart
+
+<br>
+
+```python
+plt.title('Daily Avg Rate USDGBP')
+plt.xlabel('Day')
+plt.ylabel('Daily Avg Rate')
+```
+- Here we are giving the graph a title and labels for each axis
+
+<br>
+
+```python
+plt.grid()
+```
+- This line adds a grid to the plot for better visualization of data points
+
+<br>
+
+```python
+plt.show()
+```
+- Finally, to display the plot we use `.show()`
+
+
+Complete code:
+```python
+import matplotlib.pyplot as plt
+
+days = [1, 2, 3, 4, 5, 8, 9, 10, 11, 12]
+avg_rate = [0.783, 0.791, 0.79, 0.786, 0.783, 0.783, 0.786, 0.784, 0.786, 0.783]
+
+plt.figure(figsize=(8, 5))
+plt.plot(days, avg_rate, marker='o', color='darkorange')
+plt.title('Daily Avg Rate USDGBP')
+plt.xlabel('Day')
+plt.ylabel('Daily Avg Rate')
+
+plt.grid()
+plt.show()
+```
+
+<br>
+
+---
+
+<br>
+
+Another graph that we can create is:
+
+```python
+quote_curr = ['XAU', 'FRF', 'MTL', 'FIM', 'EUR', 'DEM', 'IEP', 'SKK', 'NLG', 'LVL']
+frequency = [33842, 33148, 33146, 33146, 33146, 33146, 33142, 33134, 33132, 33130]
+```
+- Using the quote currency and it's frequency (top 10)
+
+<br>
+
+```python
+plt.figure(figsize=(10, 5))
+```
+- This line creates a figure with a size of 10 inches wide and 5 inches tall
+
+<br>
+
+```python
+plt.bar(quote_curr, frequency, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
+```
+- Here it is draw a bar chart with green bars (`color='seagreen'`), black borders (`edgecolor='black'`), thin border lines (`linewidth=0.5`), and a width of 0.7 (`width=0.7`)
+- You can play around it with to show the changes
+
+<br>
+
+```python
+plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
+```
+- This line sets the chart title with bold text and font size 14
+
+<br>
+
+```python
+plt.xlabel('Quote Currency', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+```
+- Here we set the labels the `x-axis` as "Quote Currency" and the `y-axis` as "Frequency" with a font size of 12
+
+<br>
+
+```python
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+```
+- This line adds a light grid with solid lines along the `y-axis` for better readability
+- You can also change the `linestyle` and the `alpha` to show the differences
+
+<br>
+
+```python
+plt.xticks(rotation=45)
+```
+- `xticks` is a Matplotlib function used to customize the placement, labels, and rotation of the ticks on the `x-axis`
+- And here it rotates the `x-axis` labels by 45 degrees to improve visibility
+
+<br>
+
+```python
+plt.show()
+```
+- Finally, to display the plot we use `.show()`
+
+
+Complete code:
+```python
+quote_curr = ['XAU', 'FRF', 'MTL', 'FIM', 'EUR', 'DEM', 'IEP', 'SKK', 'NLG', 'LVL']
+frequency = [33842, 33148, 33146, 33146, 33146, 33146, 33142, 33134, 33132, 33130]
+
+plt.figure(figsize=(10, 5))
+plt.bar(quote_curr, frequency, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
+plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
+plt.xlabel('Quote Currency', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+plt.xticks(rotation=45)
+
+plt.show()
+```
+
+<br>
+
+---
+
+<br>
+
+And finally we can create this other graph:
+
+```python
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+EUR = [0.98, 0.912, 0.902, 0.912, 0.896, 0.929]
+GBP = [0.964, 0.901, 0.876, 0.861, 0.824, 0.89]
+IEP = [0.837, 0.811, 0.799, 0.788, 0.783, 0.802]
+CHF = [0.772, 0.719, 0.71, 0.716, 0.706, 0.731]
+```
+- For this graph we'll compare `USD` aginst other 4 currencies over the period of 6 months
+- The currency value is the average for each month
+
+<br>
+
+```python
+plt.figure(figsize=(12, 6))
+```
+- We start by creating a figure with dimensions of 12 inches wide and 6 inches tall
+
+<br>
+
+```python
+plt.plot(months, EUR, marker='o', label='Euro', color='royalblue')
+plt.plot(months, GBP, marker='s', label='British Pound', color='mediumseagreen')
+plt.plot(months, IEP, marker='d', label='Irish Pound', color='darkred')
+plt.plot(months, CHF, marker='^', label='Swiss Franc', color='mediumpurple')
+```
+- In this 4 lines we are ploting lines:
+  - For the Euro with circular markers and a blue color
+  - For the British Pound with square markers and a green color
+  - For the Irish Pound with diamond markers and a dark red color
+  - For the Swiss Franc with triangle markers and a purple color
+
+<br>
+
+```python
+plt.title('Average Monetary Rates Against USD (Half Year)', fontsize=16, fontweight='bold')
+```
+- Here it's adding a bold title to the chart with font size 16
+
+<br>
+
+```python
+plt.xlabel('Month', fontsize=12)
+plt.ylabel('Average Rate', fontsize=12)
+```
+- These lines are setting the labels for the `x-axis` as "Month" and the `y-axis` as "Average Rate" with a font size of 12
+
+<br>
+
+```python
+plt.legend(title='Currencies', fontsize=10)
+```
+- Here adds a legend with the title "Currencies" and a font size of 10
+- The `.legend()` function in Matplotlib adds a legend to the plot, displaying labels for each plotted data series to improve interpretability
+
+<br>
+
+```python
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+```
+- These adds a dashed grid along the y-axis with 70% opacity for better readability
+
+<br>
+
+```python
+plt.show()
+```
+- Finally, to display the plot we use `.show()`
+
+
+Complete code:
+```python
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+EUR = [0.98, 0.912, 0.902, 0.912, 0.896, 0.929]
+GBP = [0.964, 0.901, 0.876, 0.861, 0.824, 0.89]
+IEP = [0.837, 0.811, 0.799, 0.788, 0.783, 0.802]
+CHF = [0.772, 0.719, 0.71, 0.716, 0.706, 0.731]
+
+plt.figure(figsize=(12, 6))
+
+plt.plot(months, EUR, marker='o', label='Euro', color='royalblue')
+plt.plot(months, GBP, marker='s', label='Gritish Pound', color='mediumseagreen')
+plt.plot(months, IEP, marker='d', label='Irish Pound', color='darkred')
+plt.plot(months, CHF, marker='^', label='Swiss Franc', color='mediumpurple')
+
+plt.title('Average Monetary Rates Against USD (Half Year)', fontsize=16, fontweight='bold')
+plt.xlabel('Month', fontsize=12)
+plt.ylabel('Average Rate', fontsize=12)
+plt.legend(title='Currencies', fontsize=10)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+plt.show()
+```
