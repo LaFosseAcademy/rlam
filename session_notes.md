@@ -116,7 +116,124 @@ print(z[1])
 
 ### Python Basics - Strings
 
+1. **Remind** trainees that a `string` is a data type used to represent a sequence of characters, such as words or sentences
+2. **Explain** that `strings` can be surrounded by '' or ""
+3. **String Literals** are a fun way to play with strings and insert them into something else - this is a concept called **concatenation**
+4. **Create** the following cell:
+```
+# String Literals
+name = 'Elizabeth'
+city = 'London'
+
+print(f'I am {name}, and I live in {city}.')
+```
+5. **Point out** that these principles should start to give us a sense that we can change and alter things using Python
+
 ### Python Basics - String Methods
+
+1. **Ask** trainees once again how to check the data type of a variable
+2. **Congratulate** the volunteer who says `type(variable)`
+3. **Create** the following cell:
+```
+# String Methods
+name = 'indiana jones'
+profession = 'archaeologist'
+type(name)
+```
+4. **Highlight** the methods that appear on the screen and explain that these are all essentialy **mini built-in functions** that will give you certain information about the string
+5. **Demonstrate** how you would use some of these methods:
+```
+# String Methods - Capitalize
+name = 'indiana jones'
+profession = 'archaeologist'
+print(name.capitalize())
+```
+6. **Feign annoyance** that the `j` is not capitalised then demonstrate `Title`:
+```
+# String Methods - Title
+name = 'indiana jones'
+profession = 'archaeologist'
+print(name.title())
+```
+7. **What about** if we want to find out how many of a certain letter are in `profession`?
+```
+String Methods - Count
+name = 'indiana jones'
+profession = 'archaeologist'
+print(profession.count('a'))
+```
+8. **Or** if I realised I was actually talking about my friend Matt Jones?
+```
+String Methods - Replace
+name = 'indiana jones'
+profession = 'archaeologist'
+print(name.replace('indiana', 'matt))
+```
+9. **And** what if I wanted to make sure his name was capitalized in the same code block?
+```
+Chaining Methods
+String Methods - Replace
+name = 'indiana jones'
+profession = 'archaeologist'
+print(name.replace('indiana', 'matt).title())
+```
+10. **Challenge** trainees to use the `Index` method to find what position the 'o' is in the word `archaeologist`
+11. **Congratulate** the person who comes up with:
+```
+String Methods - Index
+name = 'indiana jones'
+profession = 'archaeologist'
+print(profession.index('o'))
+```
+12. **Ask** what happens when we change the previous cell to use the `split` method?
+13. **Congratulate** the volunteer that notices that we're manipulating the string and we've returned a `list`
+```
+String Methods - Index
+name = 'indiana jones'
+profession = 'archaeologist'
+print(profession.split('o'))
+```
+Should return:
+`['archae', 'l', 'gist']`
 
 ### Python Basics - Functions
 
+1. **Point out** that we've already established that `methods` are mini functions
+2. **Of course**, not all functions are built in - sometimes we have to write our own
+3. **Explain** that we're not going to spend a long time on functions, but we are going to look at some syntax
+4. **Create** the following cell:
+```
+# Functions
+def my_function():
+  print('Hello from a function')
+
+# To call this function
+my_function()
+```
+5. **Explain** that `def` is a key word - it **defines** our function
+6. **Explain** that we `call` the function at the end so that we can generate the result
+7. **Explain** that we've used `print` in the example, but we could also `return` the output too
+8. **Explain** that this would return (but not necessarily **display**) the output of the function
+9. **Explain** that we can pass information into functions as **arguments**
+10. **Create** the following cell:
+```
+# Functions
+def my_function(lotrname):
+  print(f'Hello {lotrname}!!')
+
+my_function('Arwen')
+my_function('Legolas')
+my_function('Elrond')
+```
+11. **Explain** that we can also use Python's **Operators** to perform, say, maths within functions:
+```
+# Operators
+a = 7
+b = 3
+
+def my_function():
+   print(a * b)
+
+my_function()
+```
+12. **Explain** that that's the end of our whistle-stop tour around Python. It's time to start applying some of our core knowledge to manipulate data...
