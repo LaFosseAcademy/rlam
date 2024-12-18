@@ -42,3 +42,34 @@ Matplotlib to refine their visualisations.
       - So `Cell 1` is setting things up so that we can use **Python** within this session
 
 ### Python Basics
+
+1. **Explain** that, in order, to be able to work with the data that we have available to us, we're going to need to learn some Python
+2. Get the unsaid question out of the way - yes, it is named after **Monty Python**
+3. **Explain** that it's a simple to use programming language that can:
+   - be used to create web applications
+   - be used to connect to database systems
+   - be used to handle big data and perform complex mathematics
+4. All in all - it's useful for the sorts of things that we're going to want to do in Snowflake
+5. **Create** the following cell:
+```
+# Zen of Python
+import this
+```
+   - **Explain** that the `#` indicates a note - we'll be using these throughout the session, so that you are able to remember what we are trying to illustrate in each section
+   - **Run** the `import this` line
+   - **Explain** that the resultant **Zen of Python** is a sort of 'code of conduct' for the way the language should be written
+   - **Congratulate people** - they've just written their first line of code!
+6. **Demonstrate** that you can 'collapse' cells by clicking **Display Options**
+7. **Explain** that an alternative is to simply try all of these bits out in the same cell
+8. **Remind** people that we will be sending out a completed **notebook** at the end of this session so if you want to clear this one, that's fine!
+
+### Python Basics - Variables
+
+### Python Basics - Data Types
+
+### Python Basics - Strings
+
+### Python Basics - String Methods
+
+### Python Basics - Functions
+
