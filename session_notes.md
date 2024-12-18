@@ -84,6 +84,36 @@ print(name, age)
 
 ### Python Basics - Data Types
 
+1. **Point out** that the numbers in the previous exercise did not use quotation marks, but the names did - why?
+2. **Answer** these are examples of different data types
+3. **Demonstrate** this by showing a new key word:
+```
+age = 5
+name = 'Simon'
+type(name)
+```
+4. **Highlight** that this returns a lot of information - the key piece (for now) is at the top though - `name` is a `string`
+5. **Ask** trainees how they would check what data type age is?
+6. **Congratulate** the volunteer that says:
+```
+age = 5
+name = 'Simon'
+type(age)
+```
+7. **Highlight** that this is an `integer`
+8. **Explain** that we're going to do a few examples, I'll create the variable and you check it
+9. **Type** each of the following, in turn and get a volunteer to check the data type:
+   - `x = 3.14` should be a `float`
+   - `y = True` should be a `bool`
+   - `z = ['apple', 'banana', 'pear']` should be a `list`
+10. **Ask** what happens if they type:
+```
+z = ['apple', 'banana', 'pear']
+print(z[1]
+```
+11. **Congratulate** the volunteer that points out that it returns `banana` and explain that this is because, when we code - we start counting from 0
+12. **Explain** that we can do all sorts of things with data types - in fact we could just spend two hours right here doing them, but we're going to look at `strings` in particular...
+
 ### Python Basics - Strings
 
 ### Python Basics - String Methods
