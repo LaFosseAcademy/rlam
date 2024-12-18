@@ -65,6 +65,24 @@ import this
 
 ### Python Basics - Variables
 
+1. **Explain** that a **variable** is just a named storage location that holds a value
+2. **Explain** that you can then access the value by referencing the variable
+3. **Create** the following cell:
+```
+# Variables
+age = 5
+name = 'Simon'
+```
+4. **Run** the `cell` - notice that nothing happens - we're going to need a key word:
+```
+# Variables
+age = 5
+name = 'Simon'
+print(name, age)
+```
+5. **Ask** trainees to create **two** variables of their own and print them
+6. **Ask** a volunteer to walk you through writing and printing two different variables
+
 ### Python Basics - Data Types
 
 ### Python Basics - Strings
