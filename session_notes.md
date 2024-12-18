@@ -109,7 +109,7 @@ type(age)
 10. **Ask** what happens if they type:
 ```
 z = ['apple', 'banana', 'pear']
-print(z[1]
+print(z[1])
 ```
 11. **Congratulate** the volunteer that points out that it returns `banana` and explain that this is because, when we code - we start counting from 0
 12. **Explain** that we can do all sorts of things with data types - in fact we could just spend two hours right here doing them, but we're going to look at `strings` in particular...
