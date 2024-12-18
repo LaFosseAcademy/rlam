@@ -21,10 +21,9 @@ Matplotlib to refine their visualisations.
    - Access data using Snowflake
    - Perform queries on that data
    - Visualise that data
-2. Explain that we're going to utilise something called a **Notebook** within a piece of software called **Snowflake** that allows users to store, access, and exchange data.
-   It is a cloud-based data platform that provides solutions for data warehousing, data lake management, data engineering, data sharing, and business intelligence.
-   It allows organizations to store and analyze large volumes of structured and semi-structured data using a scalable and secure architecture.
-4. We'll build the Notebook collaboratively over the course of the session and, by the end, will have a set of shareable notes going through everything that we've covered.
+2. **Explain** that we're going to utilise something called a **Notebook** within a piece of software called **Snowflake** that allows users to store, access, and exchange data. It is a cloud-based data platform that provides solutions for data warehousing, data lake management, data engineering, data sharing, and business intelligence. It allows organizations to store and analyze large volumes of structured and semi-structured data using a scalable and secure architecture.
+3. **Highlight** that the session is designed to be a code-along - you should be able to type out most commands, but I'll share any long ones in the chat
+4. We'll build the Notebook collaboratively over the course of the session and, by the end, will have a set of shareable notes going through everything that we've covered
 5. **Insert** visuals that are where we're going to get to
 6. **Open** Snowflake and log-in
 7. **Navigate** to `Notebooks` tab > `Go to Notebooks` > `+ Notebook`
