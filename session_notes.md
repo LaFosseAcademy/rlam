@@ -27,7 +27,7 @@ Matplotlib to refine their visualisations.
 5. **Insert** visuals that are where we're going to get to
 6. **Open** Snowflake and log-in
 7. **Navigate** to `Notebooks` tab > `Go to Notebooks` > `+ Notebook`
-8. **Connect** to database on pop-up **CHECK**
+8. **Double check** that trainees can see a list of accessible databases on the left-hand panel
 9. **Explain** next steps:
    - You should be able to see three **cells** - these are essentially mini-tutorials but this session will cover many of these points so we're not going to use these for now
    - **Delete** `Cells 2 and 3` from the notebook (with the SQL commands and Panda dataframe)
