@@ -33,12 +33,12 @@ Matplotlib to refine their visualisations.
    - You should be able to see three **cells** - these are essentially mini-tutorials but this session will cover many of these points so we're not going to use these for now
    - **Delete** `Cells 2 and 3` from the notebook (with the SQL commands and Panda dataframe)
    - **Leave** `Cell 1` - we're going to talk through that now...
-10. **Explain** what they can see in `Cell 1`
-   - It is written in **Python**
-   - Some **libraries** are `imported` at the top of the cell. A **library** is a collection of code that can make everyday tasks more efficient
-   - Explain that, later on, we're going to be using a library called `Matplotlib` to help us do some visualisations
-   - Transfer your attention to **line 7** which intoduces **Snowpark**
-   - Explain that **Snowpark** is a developer framework provided by Snowflake, enabling users to write data pipelines, data transformations, and other complex operations in Python, Java, or Scala directly within Snowflake
-   - So `Cell 1` is setting things up so that we can use **Python** within this session
+10. **Explain** what they can see in `Cell 1`:
+      - It is written in **Python**
+      - Some **libraries** are `imported` at the top of the cell. A **library** is a collection of code that can make everyday tasks more efficient
+      - Explain that, later on, we're going to be using a library called `Matplotlib` to help us do some visualisations
+      - Transfer your attention to **line 7** which intoduces **Snowpark**
+      - Explain that **Snowpark** is a developer framework provided by Snowflake, enabling users to write data pipelines, data transformations, and other complex operations in Python, Java, or Scala directly within Snowflake
+      - So `Cell 1` is setting things up so that we can use **Python** within this session
 
 ### Python Basics
