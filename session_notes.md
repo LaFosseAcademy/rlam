@@ -24,14 +24,19 @@ Matplotlib to refine their visualisations.
 3. **Highlight** that the session is designed to be a code-along - you should be able to type out most commands, but I'll share any long ones in the chat
 4. We'll build the Notebook collaboratively over the course of the session and, by the end, will have a set of shareable notes going through everything that we've covered
 5. **Insert** visuals that are where we're going to get to **TO COMPLETE**
-6. **Open** Snowflake and log-in
-7. **Navigate** to `Notebooks` tab > `Go to Notebooks` > `+ Notebook`
-8. **Double check** that trainees can see a list of accessible databases on the left-hand panel
-9. **Explain** next steps:
+
+   **Explain** that, in the session, we're going to look to create three visuals:
+   - Analysing the most frequent currency against which base currency is measured
+   - Analysing the rate of exchange between GBP and USD across a month
+   - Analysis of the performance of the USD against four other currencies between 2022-24 
+7. **Open** Snowflake and log-in
+8. **Navigate** to `Notebooks` tab > `Go to Notebooks` > `+ Notebook`
+9. **Double check** that trainees can see a list of accessible databases on the left-hand panel
+10. **Explain** next steps:
    - You should be able to see three **cells** - these are essentially mini-tutorials but this session will cover many of these points so we're not going to use these for now
    - **Delete** `Cells 2 and 3` from the notebook (with the SQL commands and Panda dataframe)
    - **Leave** `Cell 1` - we're going to talk through that now...
-10. **Explain** what they can see in `Cell 1`:
+11. **Explain** what they can see in `Cell 1`:
       - It is written in **Python**
       - Some **libraries** are `imported` at the top of the cell. A **library** is a collection of code that can make everyday tasks more efficient
       - Explain that, later on, we're going to be using a library called `Matplotlib` to help us do some visualisations
@@ -254,3 +259,17 @@ USE SCHEMA TRAINING_ACCOUNT_DATA.DEV_SMNTC_LAYER_IBOR;
 SELECT * FROM FXRATE
 ```
 7. **Talk** trainees through the data - focusing on the size of the set, the fact that some information appears to be more useful than other information etc.
+8. **Explain** that, SQL is really useful to 'trim the fat' off big data sets in particular, so, what we're going to do is use it to get our data set trimmed down to something that we can work with more easily
+9. **Remind** trainees that we're going to build 3 visuals:
+   - Analysing the most frequent currency against which base currency is measured
+   - Analysing the rate of exchange between GBP and USD across a month
+   - Analysis of the performance of the USD against four other currencies between 2022-24
+
+### SQL - VISUAL 1 - Analysing the most frequent currency against which base currency is measured
+10. **Explain** that we're going to use the same cell that we did the `SELECT *` command in earlier. Walk trainees through the following, line-by-line:
+```
+# Displaying the Data - Narrowing our Search
+SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+FROM FXRATE
+```
+
