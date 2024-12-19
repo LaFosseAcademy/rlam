@@ -445,7 +445,7 @@ plt.show()
 2. **Create** a new **Python** cell. **Ask** trainees what we started off with last time and **congratulate** the volunteer who mentions selecting the data using SQL:
 ```
 # Visual 2
-starter = session.sql("""
+fx_data = session.sql("""
     SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
     FROM fxrate
     WHERE currency_pair = 'USDGBP'
@@ -461,7 +461,7 @@ starter.show()
 6. **First** let's refine our selection by starting to write our function:
 ```
 # Visual 2
-starter = session.sql("""
+fx_data = session.sql("""
     SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
     FROM fxrate
     WHERE currency_pair = 'USDGBP'
@@ -469,9 +469,9 @@ starter = session.sql("""
     BETWEEN '2024-01-01' AND '2024-01-31'
 """)
 
-def test():
+def exchange_rate():
     daily_avg = (
-        starter
+        fx_data
         .select(
             col('base_currency'),
             col('currency_pair'),
@@ -480,10 +480,9 @@ def test():
         )
     )
 
-    daily_avg.show()
     return daily_avg
 
-test()
+exchange_rate()
 ```
 7. **Walk through** the above, step-by-step:
    - We create a new variable `daily_avg`
@@ -497,7 +496,7 @@ test()
 8. **Explain** that we still need to refine this further...
 ```
 # Visual 2
-starter = session.sql("""
+fx_data = session.sql("""
     SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
     FROM fxrate
     WHERE currency_pair = 'USDGBP'
@@ -505,9 +504,9 @@ starter = session.sql("""
     BETWEEN '2024-01-01' AND '2024-01-31'
 """)
 
-def test():
+def exchange_rate():
     daily_avg = (
-        starter
+        fx_data
         .select(
             col('base_currency'),
             col('currency_pair'),
@@ -519,10 +518,9 @@ def test():
         .sort("rate_day")
     )
 
-    daily_avg.show()
     return daily_avg
 
-test()
+exchange_rate()
 ```
 9. **Explain** the extra bits:
    - Here we are using `group_by`, which organizes the data into groups based on these specified columns
@@ -589,3 +587,6 @@ plt.show()
 11. **Point out** that we are using `xlim` and `ylim` to trim our graph and make it more straightforward to read
 12. **Display** the visual:
 ![chart_2](./assets/mpl_chart_2.png)
+
+## VISUAL 3 - Analysis of the performance of the USD against four other currencies between 2022-24
+### VISUAL 3 - The Data
