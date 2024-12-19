@@ -35,7 +35,7 @@ Matplotlib to refine their visualisations.
 4. We'll build the Notebook collaboratively over the course of the session and, by the end, will have a set of shareable notes going through everything that we've covered
 5. **Insert** visuals that are where we're going to get to **TO COMPLETE**
 
-   **Explain** that, in the session, we're going to look to create three visuals:
+   **Explain** that, in the session, we're going to look to create three pieces of data analysis and accompanying visuals:
    - Analysing the most frequent currency against which base currency is measured
    - Analysing the rate of exchange between GBP and USD across a month
    - Analysis of the performance of the USD against four other currencies between 2022-24 
@@ -50,6 +50,8 @@ Matplotlib to refine their visualisations.
       - It is written in **Python**
       - Some **libraries** are `imported` at the top of the cell. A **library** is a collection of code that can make everyday tasks more efficient
       - Explain that, later on, we're going to be using a library called `Matplotlib` to help us do some visualisations
+      - **Explain** that we're also going to use the `Pandas` library that's there
+      - Pandas is a Python library used for working with data sets. It has functions for analysing, cleaning, exploring, and manipulating data
       - Transfer your attention to **line 7** which intoduces **Snowpark**
       - Explain that **Snowpark** is a developer framework provided by Snowflake, enabling users to write data pipelines, data transformations, and other complex operations in Python, Java, or Scala directly within Snowflake
       - So `Cell 1` is setting things up so that we can use **Python** within this session
@@ -69,6 +71,7 @@ Matplotlib to refine their visualisations.
 import this
 ```
    - **Explain** that the `#` indicates a note - we'll be using these throughout the session, so that you are able to remember what we are trying to illustrate in each section
+   - **Demonstrate** that we can also **label** the cell which is going to be useful to remind us what each cell contains
    - **Run** the `import this` line
    - **Explain** that the resultant **Zen of Python** is a sort of 'code of conduct' for the way the language should be written
    - **Congratulate people** - they've just written their first line of code!
@@ -132,7 +135,7 @@ print(z[1])
 
 1. **Remind** trainees that a `string` is a data type used to represent a sequence of characters, such as words or sentences
 2. **Explain** that `strings` can be surrounded by '' or ""
-3. **String Literals** are a fun way to play with strings and insert them into something else - this is a concept called **concatenation**
+3. **String Literals** are a fun way to play with strings and insert them into something else - this is a concept called **concatenation** - here we're going to be using `f-string` notation to replace variables with their values
 4. **Create** the following cell:
 ```
 # String Literals
@@ -155,51 +158,53 @@ profession = 'archaeologist'
 type(name)
 ```
 4. **Highlight** the methods that appear on the screen and explain that these are all essentialy **mini built-in functions** that will give you certain information about the string
-5. **Demonstrate** how you would use some of these methods:
+5. **Point out** that I'm going to use the command `print` a lot in this session - this is just to make it clear what I'm doing. In reality, though - you only really use `print` for checking things - you wouldn't see it in a final piece of code
+6. **Demonstrate** how you would use some of these methods and show what you mean about `print`:
 ```
 # String Methods - Capitalize
 name = 'indiana jones'
 profession = 'archaeologist'
-print(name.capitalize())
+name.capitalize()
 ```
-6. **Feign annoyance** that the `j` is not capitalised then demonstrate `Title`:
+7. **Feign annoyance** that the `j` is not capitalised then demonstrate `Title`
+8. **Explain** that this happens all the time - a database is made up of millions of entries of, say, names and they're typed in in different ways - esssentially what we could do here is loop through each entry and apply a method like `Title` to it in order to ensure that our formatting was universal throughout:
 ```
 # String Methods - Title
 name = 'indiana jones'
 profession = 'archaeologist'
 print(name.title())
 ```
-7. **What about** if we want to find out how many of a certain letter are in `profession`?
+8. **What about** if we want to find out how many of a certain letter are in `profession`?
 ```
 # String Methods - Count
 name = 'indiana jones'
 profession = 'archaeologist'
 print(profession.count('a'))
 ```
-8. **Or** if I realised I was actually talking about my friend Matt Jones?
+9. **Or** if I realised I was actually talking about my friend Matt Jones?
 ```
 # String Methods - Replace
 name = 'indiana jones'
 profession = 'archaeologist'
 print(name.replace('indiana', 'matt'))
 ```
-9. **And** what if I wanted to make sure his name was capitalized in the same code block?
+10. **And** what if I wanted to make sure his name was capitalized in the same code block?
 ```
 # Chaining Methods
 name = 'indiana jones'
 profession = 'archaeologist'
 print(name.replace('indiana', 'matt').title())
 ```
-10. **Challenge** trainees to use the `Index` method to find what position the 'o' is in the word `archaeologist`
-11. **Congratulate** the person who comes up with:
+11. **Challenge** trainees to use the `Index` method to find what position the 'o' is in the word `archaeologist`
+12. **Congratulate** the person who comes up with:
 ```
 # String Methods - Index
 name = 'indiana jones'
 profession = 'archaeologist'
 print(profession.index('o'))
 ```
-12. **Ask** what happens when we change the previous cell to use the `split` method?
-13. **Congratulate** the volunteer that notices that we're manipulating the string and we've returned a `list`
+13. **Ask** what happens when we change the previous cell to use the `split` method?
+14. **Congratulate** the volunteer that notices that we're manipulating the string and we've returned a `list`
 ```
 # String Methods - Index
 name = 'indiana jones'
@@ -231,8 +236,8 @@ my_function()
 10. **Create** the following cell:
 ```
 # Functions
-def my_function(lotrname):
-  print(f'Hello {lotrname}!!')
+def my_function(lotr_name):
+  print(f'Hello {lotr_name}!!')
 
 my_function('Arwen')
 my_function('Legolas')
@@ -250,26 +255,29 @@ def my_function():
 my_function()
 ```
 12. **Explain** that that's the end of our whistle-stop tour around Python. It's time to start applying some of our core knowledge to manipulate data...
+13. **Pause** Q&A
+14. **BREAK**
 
 ## Checking our Dataset
 
 1. **Explain** that it's time to start working with some actual data
 2. **Explain** that we're going to use some of their previous training first of all and utilise SQL to first connect to, and then check our data set
 3. **Explain** that we're going to clear our Python - we don't need it for now
-4. **Create** the following **SQL** cell which is going to **connect** our notebook to the database that we want to use - we're going to do this with the `USE SCHEMA` key term:
+4. **Remind** people that our notebook is set in its own database. The beauty of Snowflake is that we can connect this to a different database which is what we're going to do...
+5. **Create** the following **SQL** cell which is going to **connect** our notebook to the database that we want to use - we're going to do this with the `USE SCHEMA` key term:
 ```
 # Connecting the Database
 USE SCHEMA TRAINING_ACCOUNT_DATA.DEV_SMNTC_LAYER_IBOR;
 ```
-5. **Demonstrate** the fact that, we can run this command and we get a `Successful Execution` message
-6. **Demonstrate** that we can now have a look at our data. **Create** a new **SQL** cell:
+6. **Demonstrate** the fact that, we can run this command and we get a `Successful Execution` message
+7. **Demonstrate** that we can now have a look at our data. **Create** a new **SQL** cell:
 ```
 # Displaying the Data
 SELECT * FROM FXRATE
 ```
-7. **Talk** trainees through the data - focusing on the size of the set, the fact that some information appears to be more useful than other information etc.
-8. **Explain** that, SQL is really useful to 'trim the fat' off big data sets in particular, so, what we're going to do is use it to get our data set trimmed down to something that we can work with more easily
-9. **Remind** trainees that we're going to build 3 visuals:
+8. **Talk** trainees through the data - focusing on the size of the set, the fact that some information appears to be more useful than other information etc.
+9. **Explain** that, SQL is really useful to 'trim the fat' off big data sets in particular, so, what we're going to do is use it to get our data set trimmed down to something that we can work with more easily
+10. **Remind** trainees that we're going to build 3 bits of data analysis and visuals:
    - Analysing the most frequent currency against which base currency is measured
    - Analysing the rate of exchange between GBP and USD across a month
    - Analysis of the performance of the USD against four other currencies between 2022-24
@@ -278,7 +286,8 @@ SELECT * FROM FXRATE
 ### VISUAL 1 - The Data
 1.. **Explain** that we're going to construct our code in a new **Python** cell.
 2. **Explain** that, whilst SQL is excellent for many pieces of data analysis, Python gives us additional functionality (which we will only scratch the surface of today)
-3. **Explain** that, we're going to need to ensure that we've created the right environment to create our visuals. To do that, we're going to edit `Cell 1`:
+3. **Use** `Packages` to search for, and import `Matplotlib` - allow everything to **update**
+4. **Explain** that, we're going to need to ensure that we've created the right environment to create our visuals. To do that, we're going to edit `Cell 1`:
 ```
 # Import python packages
 import pandas as pd
@@ -289,16 +298,16 @@ from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col, avg, date_trunc, round, count
 session = get_active_session()
 ```
-4. **Explain** that here we are:
+5. **Explain** that here we are:
    - Keeping the `Pandas` library which is used for data analysis
    - Importing the `Matplotlib` library which is used for data visualisation (you may have to add this as a Package using the `Packages` tab at the top
    - Removing `Streamlit` as we're not going to use this in this session
    - Importing some core functionality from `Snowpark` in the form of methods - `col`, `avg`, `date_trunc`, `round`, `count`
-5. **Re-run** `Cell 1` to ensure all of these dependencies load into our notebook
-6. **Create** the following **Python** cell:
+6. **Re-run** `Cell 1` to ensure all of these dependencies load into our notebook
+7. **Create** the following **Python** cell:
 ```
 # Visual 1 
-starter = session.sql("""
+fx_data = session.sql("""
     SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
     FROM fxrate
 """)
@@ -308,24 +317,23 @@ starter = session.sql("""
 9. **Adapt** the main cell as follows:
 ```
 # Visual 1 
-starter = session.sql("""
+fx_data = session.sql("""
     SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
     FROM fxrate
 """)
 
-def test(): 
+def frq(): 
     quote_curr = (
-        starter
+        fx_data
         .group_by('quote_currency')
         .agg(count('*').alias('frequency'))
         .sort(col('frequency'), ascending=False)
         .limit(10)
     )
 
-    quote_curr.show()
     return quote_curr
 
-test()
+frq()
 ```
 10. **Take** trainees through the above, line-by-line:
    - First we create a variable `quote_curr`
@@ -352,7 +360,7 @@ my_df = cell4.to_pandas()
 quote_curr = my_df['QUOTE_CURRENCY']
 frq = my_df['FREQUENCY']
 ```
-5. **Explain** that in the first instance, we need to get the data we've created in the previous cell (**CHECK** THAT `CELL4` IS THE CORRECT REF!) and store the relevant data in two variables - `quote_curr` and `frq`
+5. **Explain** that in the first instance, we need to get the data we've created in the previous cell (**CHECK** THAT `CELL4` IS THE CORRECT REF!) and store the relevant data in two variables - `quote_curr` and `frq` - remind trainees that we are using [] as we are effectively accessing a **list** of data headings
 6. **Demonstrate** that we're then going to use `Matplotlib` to create a chart based on that data. To do this, we're just going to use a `code block` like the ones we just saw on the documentation:
 ```
 # Visual 1 - Show Data
@@ -363,7 +371,7 @@ frq = my_df['FREQUENCY']
 
 plt.figure(figsize=(10, 5))
 plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
-plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
+plt.title('Most Frequent Currencies against which Base Currency is Measured', fontsize=14, fontweight='bold')
 plt.xlabel('quote_curr', fontsize=12)
 plt.ylabel('frq', fontsize=12)
 
@@ -395,14 +403,39 @@ plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, wid
 plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
 plt.xlabel('Quote Currency', fontsize=12)
 plt.ylabel('Frequency', fontsize=12)
-plt.ylim(30000, 35000)
+plt.ylim(33000, 34000)
 
 plt.grid(axis='y', linestyle='-', alpha=0.1)
 plt.xticks(rotation=45)
 
 plt.show()
 ```
-11. **Display** the visual:
+11. **Explain** that we could refine this even further by using some of our knowledge of string methods and variables
+12. **Highlight** that we're accessing the data from the previous cell and using string methods to take out the '_'
+13. **Show** what happens when we just alter `axis_font` in the `variables` at the top
+```
+# Visual 1 - Show Data
+my_df = cell4.to_pandas()
+
+quote_curr = my_df['QUOTE_CURRENCY']
+frq = my_df['FREQUENCY']
+x_label = my_df.columns[0].replace('_', ' ')
+y_label = my_df.columns[1]
+axis_font = 12
+
+plt.figure(figsize=(10, 5))
+plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
+plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
+plt.xlabel(x_label, fontsize=axis_font)
+plt.ylabel(y_label, fontsize=axis_font)
+plt.ylim(33000, 34000)
+
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+plt.xticks(rotation=45)
+
+plt.show()
+```
+14. **Display** the visual:
 ![chart_1](./assets/mpl_chart_1.png)
 
 ## VISUAL 2 - Analysing the rate of exchange between GBP and USD across a month
