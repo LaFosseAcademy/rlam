@@ -275,10 +275,130 @@ SELECT * FROM FXRATE
    - Analysis of the performance of the USD against four other currencies between 2022-24
 
 ## VISUAL 1 - Analysing the most frequent currency against which base currency is measured
-10. **Explain** that we're going to use the same cell that we did the `SELECT *` command in earlier. Walk trainees through the following, line-by-line:
+### VISUAL 1 - The Data
+1.. **Explain** that we're going to construct our code in a new **Python** cell.
+2. **Explain** that, whilst SQL is excellent for many pieces of data analysis, Python gives us additional functionality (which we will only scratch the surface of today)
+3. **Explain** that, we're going to need to ensure that we've created the right environment to create our visuals. To do that, we're going to edit `Cell 1`:
 ```
-# Displaying the Data - Narrowing our Search
-SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
-FROM FXRATE
-```
+# Import python packages
+import pandas as pd
+import matplotlib.pyplot as plt
 
+# We can also use Snowpark for our analyses!
+from snowflake.snowpark.context import get_active_session
+from snowflake.snowpark.functions import col, avg, date_trunc, round, count
+session = get_active_session()
+```
+4. **Explain** that here we are:
+   - Keeping the `Pandas` library which is used for data analysis
+   - Importing the `Matplotlib` library which is used for data visualisation (you may have to add this as a Package using the `Packages` tab at the top
+   - Removing `Streamlit` as we're not going to use this in this session
+   - Importing some core functionality from `Snowpark` in the form of methods - `col`, `avg`, `date_trunc`, `round`, `count`
+5. **Re-run** `Cell 1` to ensure all of these dependencies load into our notebook
+6. **Create** the following **Python** cell:
+```
+# Visual 1 
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+""")
+```
+7. **Explain** that we're injecting some SQL into the Python file here to start us off in narrowing down our query.
+8. **Explain** that we're storing that SQL in a `variable` called `starter` - we're now going to call on that variable and manipulate it
+9. **Adapt** the main cell as follows:
+```
+# Visual 1 
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+""")
+
+def test(): 
+    quote_curr = (
+        starter
+        .group_by('quote_currency')
+        .agg(count('*').alias('frequency'))
+        .sort(col('frequency'), ascending=False)
+        .limit(10)
+    )
+
+    quote_curr.show()
+    return quote_curr
+
+test()
+```
+10. **Take** trainees through the above, line-by-line:
+   - First we create a variable `quote_curr`
+   - Then we use our SQL variable `starter`
+   - For Python queries we will use some of the methods that Snowflake has available - in this case it will be `group_by` (we want to collate information), then we pass which column we want to group `quote_currency`
+   - After `group_by`, we use `agg` and `count`
+   - `count` is a Snowpark function that was imported in `cell 1`
+   - `count` will count all '*' quote_currency and will aggregate all of them
+   - Then we create an `alias` called `frequency`, that will became a new column with the `agg()` values
+   - We use the `sort` method to sort our col (another Snowpark function) frequency and we want it to show from the most `quote_currency` used to the least `(ascending=False)`
+   - The last section of the function is a limit of 10 - we'll need this in order to prevent the resultant visual being overpopulated
+   - Finally we have to `return` the data and call the function
+11. **Run** the above - demonstrate that we have a ten row table - who had guessed that Gold (XAU) was going to be the currency against which currencies were most frequently compared?
+
+### VISUAL 1 - The Visual
+1. **Explain** that, now that we have the data - we're going to do something with it
+2. **Matplotlib** is a library that gives you a huge number of visuals that we're going to use to create our first chart
+3. **Demonstrate** the [Matplotlib documentation](https://matplotlib.org/stable/plot_types/index.html) to show the range of charts - **point out** that for each, there are implementation `code blocks`
+4. **Go back** to our **Notebook** and create a new **Python** cell:
+```
+# Visual - Get and Store Data
+my_df = cell4.to_pandas()
+
+quote_curr = my_df['QUOTE_CURRENCY']
+frq = my_df['FREQUENCY']
+```
+5. **Explain** that in the first instance, we need to get the data we've created in the previous cell (**CHECK** THAT `CELL4` IS THE CORRECT REF!) and store the relevant data in two variables - `quote_curr` and `frq`
+6. **Demonstrate** that we're then going to use `Matplotlib` to create a chart based on that data. To do this, we're just going to use a `code block` like the ones we just saw on the documentation:
+```
+# Visual - Show Data
+my_df = cell4.to_pandas()
+
+quote_curr = my_df['QUOTE_CURRENCY']
+frq = my_df['FREQUENCY']
+
+plt.figure(figsize=(10, 5))
+plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
+plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
+plt.xlabel('quote_curr', fontsize=12)
+plt.ylabel('frq', fontsize=12)
+
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+plt.xticks(rotation=45)
+
+plt.show()
+```
+7. **Take** trainees through the above code:
+   - `figure` is setting the size of the visual
+   - `bar` is the type of chart
+   - `title` and `labels` are self-explanatory
+   - `grid` is adding gridlines
+   - `xticks` is manipulating the way text is displayed on the x-axis
+8. **Run** this. You should get a visual with no values below c.33,000
+9. **Explain** that we could refine this a little by:
+   - Relabelling our axes
+   - Zooming in on our graph
+10. **Alter** the code:
+```
+# Visual - Show Data
+my_df = cell4.to_pandas()
+
+quote_curr = my_df['QUOTE_CURRENCY']
+frq = my_df['FREQUENCY']
+
+plt.figure(figsize=(10, 5))
+plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
+plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
+plt.xlabel('Quote Currency', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+plt.ylim(30000, 35000)
+
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+plt.xticks(rotation=45)
+
+plt.show()
+```
