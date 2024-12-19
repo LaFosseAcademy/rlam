@@ -10,9 +10,18 @@ Matplotlib to refine their visualisations.
 
 1. Introduction
 2. Python Basics
-3. Loading Data using SQL
-4. Analysing Data using Python
-5. Data Visualisation
+3. Visual 1
+   - SQL
+   - Python
+   - Matplotlib
+4. Visual 2
+   - SQL
+   - Python
+   - Matplotlib
+5. Visual 3
+   - SQL
+   - Python
+   - Matplotlib
 
 ## Introduction
 
