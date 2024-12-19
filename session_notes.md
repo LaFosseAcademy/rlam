@@ -590,3 +590,94 @@ plt.show()
 
 ## VISUAL 3 - Analysis of the performance of the USD against four other currencies between 2022-24
 ### VISUAL 3 - The Data
+```
+fx_data = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+""")
+
+def comp_usd():
+    usd_against = (
+        fx_data
+        .select(
+        col('base_currency'),
+        col('quote_currency'),
+        col('fx_rate_base_currency'),
+        date_trunc('DAY', col('rate_date')).alias('rate_day')
+    )
+    .where(
+        (col('base_currency') == 'USD') 
+        & ((col('quote_currency') == 'EUR') 
+        | (col('quote_currency') == 'GBP')
+        | (col('quote_currency') == 'IEP')
+        | (col('quote_currency') == 'CHF'))
+    ) 
+    .group_by('base_currency', 'quote_currency', 'rate_day')
+    .agg(round(avg('fx_rate_base_currency'), 3).alias('avg_rate'))
+    .sort("rate_day")
+    )
+    return usd_against
+
+comp_usd()
+```
+
+### VISUAL 3 - The Visual
+```
+my_df = VISUAL_3_DATA.to_pandas()
+
+import matplotlib.pyplot as plt
+
+# Filter the data for each currency
+EUR = my_df[my_df['QUOTE_CURRENCY'] == 'EUR']
+GBP = my_df[my_df['QUOTE_CURRENCY'] == 'GBP']
+IEP = my_df[my_df['QUOTE_CURRENCY'] == 'IEP']
+CHF = my_df[my_df['QUOTE_CURRENCY'] == 'CHF']
+
+# Now we have the filtered data, extract the necessary columns
+rate_day_EUR = EUR['RATE_DAY']
+rate_day_GBP = GBP['RATE_DAY']
+rate_day_IEP = IEP['RATE_DAY']
+rate_day_CHF = CHF['RATE_DAY']
+
+# Extract the exchange rate columns for each currency (using 'AVG_RATE')
+avg_rate_EUR = EUR['AVG_RATE']
+avg_rate_GBP = GBP['AVG_RATE']
+avg_rate_IEP = IEP['AVG_RATE']
+avg_rate_CHF = CHF['AVG_RATE']
+
+# Plot the data
+plt.figure(figsize=(12, 5))
+
+# Plot for EUR
+plt.plot(rate_day_EUR, avg_rate_EUR, label='Euro', color='royalblue')
+
+# Plot for GBP
+plt.plot(rate_day_GBP, avg_rate_GBP, label='British Pound', color='mediumseagreen')
+
+# Plot for IEP
+plt.plot(rate_day_IEP, avg_rate_IEP, label='Irish Pound', color='darkred')
+
+# Plot for CHF
+plt.plot(rate_day_CHF, avg_rate_CHF, label='Swiss Franc', color='orange')
+
+# Add labels and title
+plt.title('US Dollar Performance 2022-24', fontsize=14, fontweight='bold')
+plt.xlabel('Rate Day', fontsize=12)
+plt.ylabel('Average Rate', fontsize=12)
+
+# Set x-axis limits
+plt.xlim(pd.Timestamp('2022-08'), pd.Timestamp('2024-11'))
+
+# Set y-axis limits 
+plt.ylim(0.6, 1.1)
+
+# Customize grid and ticks
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+plt.xticks(rotation=45)
+
+# Show the plot
+plt.legend()
+plt.show()
+```
+![chart_3](./assets/mpl_chart_3.png)
+
