@@ -412,15 +412,16 @@ plt.show()
 ```
 11. **Explain** that we could refine this even further by using some of our knowledge of string methods and variables
 12. **Highlight** that we're accessing the data from the previous cell and using string methods to take out the '_'
-13. **Show** what happens when we just alter `axis_font` in the `variables` at the top
+13. **Highlight** we could also use `Title` if we wanted to...
+14. **Show** what happens when we just alter `axis_font` in the `variables` at the top
 ```
 # Visual 1 - Show Data
 my_df = cell4.to_pandas()
 
 quote_curr = my_df['QUOTE_CURRENCY']
 frq = my_df['FREQUENCY']
-x_label = my_df.columns[0].replace('_', ' ')
-y_label = my_df.columns[1]
+x_label = my_df.columns[0].title().replace('_', ' ')
+y_label = my_df.columns[1].title()
 axis_font = 12
 
 plt.figure(figsize=(10, 5))
