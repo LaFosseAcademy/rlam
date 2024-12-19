@@ -499,5 +499,59 @@ test()
 10. **Run** the `cell` and point out that each date now has one, aggregated piece of data which should make visualisation much clearer
 
 ### VISUAL 2 - The Visual
+1. **Explain** that, as before, we're going to use a new cell to work with `Matplotlib`
+2. **Ask** trainees if they can remember what the first things we did last time were
+3. **Congratulate** the volunteer who says that we need to think about `Pandas` and `variables`
+4. **Start** the **Python** code block off:
+```
+# Visual 2 - The Visual
+my_df = cell4.to_pandas()
 
+rate_day = my_df['RATE_DAY']
+daily_avg = my_df['DAILY_AVG_RATE']
+```
+5. **Point out** that we need to store our intended pieces of data for the `x-axis` and `y-axis` as our variables
+6. **Explain** that we're going to use a `stack plot` here to showcase our data
+7. **Edit** the cell as follows:
+```
+my_df = cell4.to_pandas()
 
+rate_day = my_df['RATE_DAY']
+daily_avg = my_df['DAILY_AVG_RATE']
+
+plt.figure(figsize=(10, 5))
+plt.stackplot(rate_day, daily_avg, color='none', edgecolor='blue', linewidth=1)
+plt.title('USD to GBP Rates January 2024', fontsize=14, fontweight='bold')
+plt.xlabel('Date', fontsize=12)
+plt.ylabel('Rate', fontsize=12)
+
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+plt.xticks(rotation=45)
+
+plt.show()
+```
+8. **Demonstrate** each line - focussing on `title`, `labels` etc.
+9. **Run** the resultant graph. You should get something with an inappropriate scale on the `y-axis` and which has a 'gap' at the start and end of the data
+10. **Alter** the code:
+```
+my_df = cell4.to_pandas()
+
+rate_day = my_df['RATE_DAY']
+daily_avg = my_df['DAILY_AVG_RATE']
+
+plt.figure(figsize=(10, 5))
+plt.stackplot(rate_day, daily_avg, color='none', edgecolor='blue', linewidth=1)
+plt.title('USD to GBP Rates January 2024', fontsize=14, fontweight='bold')
+plt.xlabel('Date', fontsize=12)
+plt.ylabel('Rate', fontsize=12)
+plt.xlim(pd.Timestamp('2024-01-01'), pd.Timestamp('2024-01-31'))
+plt.ylim(0.77, 0.8)
+
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+plt.xticks(rotation=45)
+
+plt.show()
+```
+11. **Point out** that we are using `xlim` and `ylim` to trim our graph and make it more straightforward to read
+12. **Display** the visual:
+![chart_2](./assets/mpl_chart_2.png)
