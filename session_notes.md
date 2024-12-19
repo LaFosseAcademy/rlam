@@ -171,7 +171,7 @@ print(profession.count('a'))
 # String Methods - Replace
 name = 'indiana jones'
 profession = 'archaeologist'
-print(name.replace('indiana', 'matt))
+print(name.replace('indiana', 'matt'))
 ```
 9. **And** what if I wanted to make sure his name was capitalized in the same code block?
 ```
