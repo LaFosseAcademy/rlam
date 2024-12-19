@@ -10,15 +10,16 @@ Matplotlib to refine their visualisations.
 
 1. Introduction
 2. Python Basics
-3. Visual 1
+3. Checking our Dataset
+4. Visual 1
    - SQL
    - Python
    - Matplotlib
-4. Visual 2
+5. Visual 2
    - SQL
    - Python
    - Matplotlib
-5. Visual 3
+6. Visual 3
    - SQL
    - Python
    - Matplotlib
@@ -250,7 +251,7 @@ my_function()
 ```
 12. **Explain** that that's the end of our whistle-stop tour around Python. It's time to start applying some of our core knowledge to manipulate data...
 
-## SQL
+## Checking our Dataset
 
 1. **Explain** that it's time to start working with some actual data
 2. **Explain** that we're going to use some of their previous training first of all and utilise SQL to first connect to, and then check our data set
@@ -273,7 +274,7 @@ SELECT * FROM FXRATE
    - Analysing the rate of exchange between GBP and USD across a month
    - Analysis of the performance of the USD against four other currencies between 2022-24
 
-### SQL - VISUAL 1 - Analysing the most frequent currency against which base currency is measured
+## VISUAL 1 - Analysing the most frequent currency against which base currency is measured
 10. **Explain** that we're going to use the same cell that we did the `SELECT *` command in earlier. Walk trainees through the following, line-by-line:
 ```
 # Displaying the Data - Narrowing our Search
