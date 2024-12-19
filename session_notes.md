@@ -178,7 +178,7 @@ print(name.replace('indiana', 'matt'))
 # Chaining Methods
 name = 'indiana jones'
 profession = 'archaeologist'
-print(name.replace('indiana', 'matt).title())
+print(name.replace('indiana', 'matt').title())
 ```
 10. **Challenge** trainees to use the `Index` method to find what position the 'o' is in the word `archaeologist`
 11. **Congratulate** the person who comes up with:
