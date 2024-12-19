@@ -346,7 +346,7 @@ test()
 3. **Demonstrate** the [Matplotlib documentation](https://matplotlib.org/stable/plot_types/index.html) to show the range of charts - **point out** that for each, there are implementation `code blocks`
 4. **Go back** to our **Notebook** and create a new **Python** cell:
 ```
-# Visual - Get and Store Data
+# Visual 1 - Get and Store Data
 my_df = cell4.to_pandas()
 
 quote_curr = my_df['QUOTE_CURRENCY']
@@ -355,7 +355,7 @@ frq = my_df['FREQUENCY']
 5. **Explain** that in the first instance, we need to get the data we've created in the previous cell (**CHECK** THAT `CELL4` IS THE CORRECT REF!) and store the relevant data in two variables - `quote_curr` and `frq`
 6. **Demonstrate** that we're then going to use `Matplotlib` to create a chart based on that data. To do this, we're just going to use a `code block` like the ones we just saw on the documentation:
 ```
-# Visual - Show Data
+# Visual 1 - Show Data
 my_df = cell4.to_pandas()
 
 quote_curr = my_df['QUOTE_CURRENCY']
@@ -384,7 +384,7 @@ plt.show()
    - Zooming in on our graph
 10. **Alter** the code:
 ```
-# Visual - Show Data
+# Visual 1 - Show Data
 my_df = cell4.to_pandas()
 
 quote_curr = my_df['QUOTE_CURRENCY']
@@ -404,3 +404,100 @@ plt.show()
 ```
 11. **Display** the visual:
 ![chart_1](./assets/mpl_chart_1.png)
+
+## VISUAL 2 - Analysing the rate of exchange between GBP and USD across a month
+### VISUAL 2 - The Data
+1. **Explain** that we're going to go through the same process for other visuals, bringing more detail in.
+2. **Create** a new **Python** cell. **Ask** trainees what we started off with last time and **congratulate** the volunteer who mentions selecting the data using SQL:
+```
+# Visual 2
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+    WHERE currency_pair = 'USDGBP'
+    AND rate_date 
+    BETWEEN '2024-01-01' AND '2024-01-31'
+""")
+
+starter.show()
+```
+3. **Talk through** the above - point out that we're using `WHERE` and `BETWEEN` to narrow down our data set
+4. **Run** the result - **highlight** that, whilst useful, there appear to be multiple entries next to each day in January from the same time - if we visualised this, this might get confusing
+5. **Explain** that, as we did previously, we're going to use Python to refine our data
+6. **First** let's refine our selection by starting to write our function:
+```
+# Visual 2
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+    WHERE currency_pair = 'USDGBP'
+    AND rate_date 
+    BETWEEN '2024-01-01' AND '2024-01-31'
+""")
+
+def test():
+    daily_avg = (
+        starter
+        .select(
+            col('base_currency'),
+            col('currency_pair'),
+            col('fx_rate_base_currency'),
+            date_trunc('DAY', col('rate_date')).alias('rate_day')
+        )
+    )
+
+    daily_avg.show()
+    return daily_avg
+
+test()
+```
+7. **Walk through** the above, step-by-step:
+   - We create a new variable `daily_avg`
+   - Then we use our SQL query `starter` and use the `select` method
+   - For this query we are selecting three columns: `base_currency`, `currency_pair` and `fx_rate_base_currency`
+   - Make sure to use the `col` function, so Python (Snowpark) knows that we are referencing columns
+   - Then we use another Snowpark function called `date_trunc`
+   - `date_trunc` is commonly used for grouping data by specific date units, in this case we want to group by `DAY` - remember, we are using `DAY` because there is many occurrences throughout the day and we want to make sure it only shows one day at the time
+    - Then we pass from which column this date is coming from col('rate_date')
+    - Finally we use an alias to make it simple to understand: `rate_day`
+8. **Explain** that we still need to refine this further...
+```
+# Visual 2
+starter = session.sql("""
+    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
+    FROM fxrate
+    WHERE currency_pair = 'USDGBP'
+    AND rate_date 
+    BETWEEN '2024-01-01' AND '2024-01-31'
+""")
+
+def test():
+    daily_avg = (
+        starter
+        .select(
+            col('base_currency'),
+            col('currency_pair'),
+            col('fx_rate_base_currency'),
+            date_trunc('DAY', col('rate_date')).alias('rate_day')
+        )
+        .group_by("base_currency", "currency_pair", "rate_day")
+        .agg(round(avg("fx_rate_base_currency"), 3).alias("daily_avg_rate"))
+        .sort("rate_day")
+    )
+
+    daily_avg.show()
+    return daily_avg
+
+test()
+```
+9. **Explain** the extra bits:
+   - Here we are using `group_by`, which organizes the data into groups based on these specified columns
+   - `agg` performs an aggregation on the grouped data to calculate the average of the fx_rate_base_currency column for each group
+   - The `round()` Snowpark function ensures the average value is rounded to 3 decimal places for precision
+   - And the resulting column is renamed to `daily_avg_rate` using the `alias` method
+   - We then use `sort` to put results in ascending order
+10. **Run** the `cell` and point out that each date now has one, aggregated piece of data which should make visualisation much clearer
+
+### VISUAL 2 - The Visual
+
+
