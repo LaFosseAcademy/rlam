@@ -161,22 +161,21 @@ print(name.title())
 ```
 7. **What about** if we want to find out how many of a certain letter are in `profession`?
 ```
-String Methods - Count
+# String Methods - Count
 name = 'indiana jones'
 profession = 'archaeologist'
 print(profession.count('a'))
 ```
 8. **Or** if I realised I was actually talking about my friend Matt Jones?
 ```
-String Methods - Replace
+# String Methods - Replace
 name = 'indiana jones'
 profession = 'archaeologist'
 print(name.replace('indiana', 'matt))
 ```
 9. **And** what if I wanted to make sure his name was capitalized in the same code block?
 ```
-Chaining Methods
-String Methods - Replace
+# Chaining Methods
 name = 'indiana jones'
 profession = 'archaeologist'
 print(name.replace('indiana', 'matt).title())
@@ -184,7 +183,7 @@ print(name.replace('indiana', 'matt).title())
 10. **Challenge** trainees to use the `Index` method to find what position the 'o' is in the word `archaeologist`
 11. **Congratulate** the person who comes up with:
 ```
-String Methods - Index
+# String Methods - Index
 name = 'indiana jones'
 profession = 'archaeologist'
 print(profession.index('o'))
@@ -192,7 +191,7 @@ print(profession.index('o'))
 12. **Ask** what happens when we change the previous cell to use the `split` method?
 13. **Congratulate** the volunteer that notices that we're manipulating the string and we've returned a `list`
 ```
-String Methods - Index
+# String Methods - Index
 name = 'indiana jones'
 profession = 'archaeologist'
 print(profession.split('o'))
