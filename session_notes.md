@@ -402,3 +402,5 @@ plt.xticks(rotation=45)
 
 plt.show()
 ```
+11. **Display** the visual:
+![chart_1](./assets/mpl_chart_1.png)
