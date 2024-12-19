@@ -10,12 +10,11 @@ Matplotlib to refine their visualisations.
 
 1. Introduction
 2. Python Basics
-3. Introduction to Snowflake and Snowpark
-4. Loading Data using SQL
-5. Analysing Data using Python
-6. Data Visualisation
+3. Loading Data using SQL
+4. Analysing Data using Python
+5. Data Visualisation
 
-### Introduction
+## Introduction
 
 1. Welcome to the session. Explain that, by the end of the session you should be able to:
    - Access data using Snowflake
@@ -40,7 +39,7 @@ Matplotlib to refine their visualisations.
       - Explain that **Snowpark** is a developer framework provided by Snowflake, enabling users to write data pipelines, data transformations, and other complex operations in Python, Java, or Scala directly within Snowflake
       - So `Cell 1` is setting things up so that we can use **Python** within this session
 
-### Python Basics
+## Python Basics
 
 1. **Explain** that, in order, to be able to work with the data that we have available to us, we're going to need to learn some Python
 2. Get the unsaid question out of the way - yes, it is named after **Monty Python**
@@ -237,3 +236,21 @@ def my_function():
 my_function()
 ```
 12. **Explain** that that's the end of our whistle-stop tour around Python. It's time to start applying some of our core knowledge to manipulate data...
+
+## SQL
+
+1. **Explain** that it's time to start working with some actual data
+2. **Explain** that we're going to use some of their previous training first of all and utilise SQL to first connect to, and then check our data set
+3. **Explain** that we're going to clear our Python - we don't need it for now
+4. **Create** the following **SQL** cell which is going to **connect** our notebook to the database that we want to use - we're going to do this with the `USE SCHEMA` key term:
+```
+# Connecting the Database
+USE SCHEMA TRAINING_ACCOUNT_DATA.DEV_SMNTC_LAYER_IBOR;
+```
+5. **Demonstrate** the fact that, we can run this command and we get a `Successful Execution` message
+6. **Demonstrate** that we can now have a look at our data. **Create** a new **SQL** cell:
+```
+# Displaying the Data
+SELECT * FROM FXRATE
+```
+7. **Talk** trainees through the data - focusing on the size of the set, the fact that some information appears to be more useful than other information etc.
