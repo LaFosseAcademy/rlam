@@ -46,8 +46,8 @@ As is often the case in computer programming there's multiple ways to achieve a 
 name = 'Elizabeth'
 city = 'London'
 
-print('I am ' + name + ', and I live in ' + city) # Output: 'I am Elizabeth, and I like in London'
-print(f'I am {name}, and I live in {city}') # Output: 'I am Elizabeth, and I like in London'
+print('I am ' + name + ', and I live in ' + city) # Output: 'I am Elizabeth, and I live in London'
+print(f'I am {name}, and I live in {city}') # Output: 'I am Elizabeth, and I live in London'
 ```
 
 ## String Methods
