@@ -11,7 +11,7 @@ age = 5
 name = 'Simon'
 ```
 
-## Data Type's
+## Data Types
 
 Our variables can be assigned to represent a number of different **data type's**. Although there are many different data types, the one's most commonly seen are:
 
