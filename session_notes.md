@@ -285,7 +285,9 @@ SELECT * FROM FXRATE
 ## VISUAL 1 - Analysing the most frequent currency against which base currency is measured
 ### VISUAL 1 - The Data
 1.. **Explain** that we're going to construct our code in a new **Python** cell.
+
 2. **Explain** that, whilst SQL is excellent for many pieces of data analysis, Python gives us additional functionality (which we will only scratch the surface of today)
+
 3. **Use** `Packages` to search for, and import `Matplotlib` - allow everything to **update**
 4. **Explain** that, we're going to need to ensure that we've created the right environment to create our visuals. To do that, we're going to edit `Cell 1`:
 ```
