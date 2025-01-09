@@ -5,6 +5,7 @@
 - PowerPoint get the methods in for Strings and Snowflake
 - Poss put in some tips about the 'order' in which to carry out methods
 - On Visual 1 - do we need to demonstrate exactly what happens, line-by-line as we apply methods and how we know to apply the next one
+- Can reduce text manipulation in order to make room for dates
 
 ## Data Types
 - Add dates in here
@@ -18,3 +19,8 @@
 - Demonstrate `Save as` when we've completed a visual
 - Can we do `GBPUSD` rather than `USDGBP`?
 - Visual 2 - do 1/1/24 - 31/12/24 - average rate monthly using the ID day rate (there are different 'types' of rate measurements that come through to the table - hence multiple entries)
+
+## Additional
+- GRAPH 1 - GBPUSD over 2024 - line?
+- GRAPH 2 - GBPUSD monthly avg - plot?
+- GRAPH 3 - currency compare - send through
