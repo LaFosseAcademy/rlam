@@ -129,7 +129,7 @@ z = ['apple', 'banana', 'pear']
 print(z[1])
 ```
 11. **Congratulate** the volunteer that points out that it returns `banana` and explain that this is because, when we code - we start counting from 0
-12. **Explain** that we can do all sorts of things with data types - in fact we could just spend two hours right here doing them, but we're going to look at `strings` in particular...
+12. **Explain** that we can do all sorts of things with data types - in fact we could just spend two hours right here doing them, but we're going to look at `strings` and `dates` in particular...
 
 ### Python Basics - Strings
 
@@ -213,6 +213,36 @@ print(profession.split('o'))
 ```
 Should return:
 `['archae', 'l', 'gist']`
+
+### Python Basics - Date/Time
+
+1. **Explain** that, when manipulating data - a knowledge of how date/time works is useful
+2. **Explain** that we're going to look at this using **Pandas** - the library that we imported at the top of the Notebook
+3. **Highlight** that the Pandas library is particularly useful for data manipulation and analysis. In particular, it offers data structures and operations for manipulating numerical tables and time series.
+4. **Explain** that, with this in mind, we're going to look at roughly how `datetime` works. Like our work on `strings`, it won't be exhaustive, but this will give you an overview of some core principles.
+5. **Create** the following cell:
+```
+timestamp = pd.Timestamp(2025, 6, 6)
+
+date = timestamp.date()
+
+print(date)
+```
+6. **Explain** what we're doing here - we're initially **creating** a `Timestamp` (a Pandas version of a date) - we're then extracting the data from this. Learning to construct a datetime object using (year, month, day) helps us understand the structure of the datetime class and its parameters. By manually specifying these values, we get a feel for how the datetime module organizes and manages date and time data.
+7. **Explain** that in real-world scenarios, we often need to work with specific, fixed dates—such as scheduling an event, analysing historical data, or creating test cases for code that involves dates.
+8. **Alter** the code to demonstrate what we can do with it:
+   - `year` - for just the year
+   - `month` - for just the month
+   - `date.day` - for the date (you can access month by using `date.month` as well)
+   - I could also pass two `arguments` in - e.g. `date.day, month`
+9. **Point out** that we said a use-case of this might be to look at specific days for, say, a course that's running - let's look at that:
+```
+start_date = pd.Timestamp(2025, 1, 1)
+end_date = pd.Timestamp(2025, 12, 31)
+
+course_length = end_date - start_date
+print(course_length.days)
+```
 
 ### Python Basics - Functions
 
