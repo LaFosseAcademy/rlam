@@ -243,6 +243,33 @@ end_date = pd.Timestamp(2025, 12, 31)
 course_length = end_date - start_date
 print(course_length.days)
 ```
+10. **Explain** that we also might simply want to know what the time and date are now rather than pre-setting anything - we can do that too:
+11. **Create** a new cell:
+```
+today = pd.Timestamp.today()
+
+print(today)
+```
+12. **Explain** that here we're just accessing an inbuilt function called `today`
+13. **Demonstrate** that we can access component parts of the date if we want to:
+```
+today = pd.Timestamp.today()
+year = today.year
+
+print(year)
+```
+14. **Show** other combinations:
+    - `today.month`
+    - `today.day`
+15. **Finally** explain that the course length calculation we did earlier would still work here:
+```
+today = pd.Timestamp.today()
+end_date = pd.Timestamp(2025, 12, 31)
+
+course_length = end_date - today
+
+print(course_length.days)
+```
 
 ### Python Basics - Functions
 
