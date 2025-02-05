@@ -404,25 +404,24 @@ gbp_usd_24()
 4. **Go back** to our **Notebook** and create a new **Python** cell:
 ```
 # Visual 1 - Get and Store Data
-my_df = cell4.to_pandas()
+my_df = GBPUSD_data.to_pandas()
 
-quote_curr = my_df['QUOTE_CURRENCY']
-frq = my_df['FREQUENCY']
+rate_day = my_df['RATE_DATE']
+fx_rate = my_df['FX_RATE_BASE_CURRENCY']
 ```
-5. **Explain** that in the first instance, we need to get the data we've created in the previous cell (**CHECK** THAT `CELL4` IS THE CORRECT REF!) and store the relevant data in two variables - `quote_curr` and `frq` - remind trainees that we are using [] as we are effectively accessing a **list** of data headings
+5. **Explain** that in the first instance, we need to get the data we've created in the previous cell (**CHECK** THAT `GBPUSD_data` IS THE CORRECT REF!) and store the relevant data in two variables - `rate_day` and `fx_rate` - remind trainees that we are using [] as we are effectively accessing a **list** of data headings
 6. **Demonstrate** that we're then going to use `Matplotlib` to create a chart based on that data. To do this, we're just going to use a `code block` like the ones we just saw on the documentation:
 ```
 # Visual 1 - Show Data
-my_df = cell4.to_pandas()
+my_df = GBPUSD_data.to_pandas()
 
-quote_curr = my_df['QUOTE_CURRENCY']
-frq = my_df['FREQUENCY']
+rate_day = my_df['RATE_DATE']
+fx_rate = my_df['FX_RATE_BASE_CURRENCY']
 
-plt.figure(figsize=(10, 5))
-plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
-plt.title('Most Frequent Currencies against which Base Currency is Measured', fontsize=14, fontweight='bold')
-plt.xlabel('quote_curr', fontsize=12)
-plt.ylabel('frq', fontsize=12)
+plt.plot(rate_day, fx_rate , color='none', linewidth=1)
+plt.title('GBP to USD Rates 2024', fontsize=14, fontweight='bold')
+plt.xlabel('Date', fontsize=12)
+plt.ylabel('Rate', fontsize=12)
 
 plt.grid(axis='y', linestyle='-', alpha=0.1)
 plt.xticks(rotation=45)
@@ -430,29 +429,27 @@ plt.xticks(rotation=45)
 plt.show()
 ```
 7. **Take** trainees through the above code:
-   - `figure` is setting the size of the visual
-   - `bar` is the type of chart
+   - `plot` is the type of chart
    - `title` and `labels` are self-explanatory
    - `grid` is adding gridlines
    - `xticks` is manipulating the way text is displayed on the x-axis
-8. **Run** this. You should get a visual with no values below c.33,000
+8. **Run** this. You should get a visual which is imperfectly displayed (e.g. there are 'margins' around the data
 9. **Explain** that we could refine this a little by:
-   - Relabelling our axes
    - Zooming in on our graph
 10. **Alter** the code:
 ```
 # Visual 1 - Show Data
-my_df = cell4.to_pandas()
+my_df = GBPUSD_data.to_pandas()
 
-quote_curr = my_df['QUOTE_CURRENCY']
-frq = my_df['FREQUENCY']
+rate_day = my_df['RATE_DATE']
+fx_rate = my_df['FX_RATE_BASE_CURRENCY']
 
-plt.figure(figsize=(10, 5))
-plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
-plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
-plt.xlabel('Quote Currency', fontsize=12)
-plt.ylabel('Frequency', fontsize=12)
-plt.ylim(33000, 34000)
+plt.plot(rate_day, fx_rate , color='none', linewidth=1)
+plt.title('GBP to USD Rates 2024', fontsize=14, fontweight='bold')
+plt.xlabel('Date', fontsize=12)
+plt.ylabel('Rate', fontsize=12)
+plt.xlim(pd.Timestamp('2024-01-01'), pd.Timestamp('2024-11-15'))
+plt.ylim(1.2, 1.4)
 
 plt.grid(axis='y', linestyle='-', alpha=0.1)
 plt.xticks(rotation=45)
