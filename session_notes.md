@@ -28,12 +28,12 @@ Matplotlib to refine their visualisations.
 2. **Explain** that we're going to utilise something called a **Notebook** within a piece of software called **Snowflake** that allows users to store, access, and exchange data. It is a cloud-based data platform that provides solutions for data warehousing, data lake management, data engineering, data sharing, and business intelligence. It allows organizations to store and analyze large volumes of structured and semi-structured data using a scalable and secure architecture.
 3. **Highlight** that the session is designed to be a code-along - you should be able to type out most commands, but I'll share any long ones in the chat
 4. We'll build the Notebook collaboratively over the course of the session and, by the end, will have a set of shareable notes going through everything that we've covered
-5. **Insert** visuals that are where we're going to get to **TO COMPLETE**
+5. **Show** visuals that are where we're going to get to [here](https://lafosseassociatesltd-my.sharepoint.com/:p:/r/personal/simon_clemson_lafosse_com/_layouts/15/Doc.aspx?sourcedoc=%7BD90E1C1D-7DCD-4F27-8F11-4D7B0B20267E%7D&file=RLAM%20x%20La%20Fosse.pptx&action=edit&mobileredirect=true)
 
-   **Explain** that, in the session, we're going to look to create three pieces of data analysis and accompanying visuals:
-   - Analysing the most frequent currency against which base currency is measured
-   - Analysing the rate of exchange between GBP and USD across a month
-   - Analysis of the performance of the USD against four other currencies between 2022-24 
+   **Explain** that, in the session, we're going to look to create two pieces of data analysis and accompanying visuals:
+   - Analysing GBP to USD Exchange Rates across 2024
+   - Analysing monthly average GBP to USD Exchange Rates across 2024
+
 7. **Open** Snowflake and log-in
 8. **Navigate** to `Notebooks` tab > `Go to Notebooks` > `+ Notebook`
 9. **Double check** that trainees can see a list of accessible databases on the left-hand panel
