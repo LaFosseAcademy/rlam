@@ -456,34 +456,35 @@ plt.xticks(rotation=45)
 
 plt.show()
 ```
+**ONLY DO THIS IF THERE IS TIME**
 11. **Explain** that we could refine this even further by using some of our knowledge of string methods and variables
 12. **Highlight** that we're accessing the data from the previous cell and using string methods to take out the '_'
 13. **Highlight** we could also use `Title` if we wanted to...
 14. **Show** what happens when we just alter `axis_font` in the `variables` at the top
 ```
 # Visual 1 - Show Data
-my_df = cell4.to_pandas()
+my_df = GBPUSD_data.toPandas()
 
-quote_curr = my_df['QUOTE_CURRENCY']
-frq = my_df['FREQUENCY']
-x_label = my_df.columns[0].title().replace('_', ' ')
-y_label = my_df.columns[1].title()
+rate_day = my_df['RATE_DATE']
+fx_rate = my_df['FX_RATE_BASE_CURRENCY']
 axis_font = 12
 
-plt.figure(figsize=(10, 5))
-plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
-plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
-plt.xlabel(x_label, fontsize=axis_font)
-plt.ylabel(y_label, fontsize=axis_font)
-plt.ylim(33000, 34000)
+x_label = my_df.columns[6].title().replace('_', ' ')
+y_label = my_df.columns[2].title().replace('_', ' ')
+
+plt.plot(rate_day, fx_rate , color='blue', linewidth=1)
+plt.title('GBP to USD Rates 2024', fontsize=14, fontweight='bold')
+plt.xlabel(x_label, axis_font)
+plt.ylabel(y_label, axis_font)
+plt.xlim(pd.Timestamp('2024-01-01'), pd.Timestamp('2024-11-15'))
+plt.ylim(1.2, 1.4)
 
 plt.grid(axis='y', linestyle='-', alpha=0.1)
 plt.xticks(rotation=45)
 
 plt.show()
-```
 14. **Display** the visual:
-![chart_1](./assets/mpl_chart_1.png)
+![chart_1](./assets/GBP_USD_24.png)
 
 ## VISUAL 2 - Analysing the rate of exchange between GBP and USD across a month
 ### VISUAL 2 - The Data
