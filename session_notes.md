@@ -351,6 +351,7 @@ from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col, avg, date_trunc, round, count
 session = get_active_session()
 ```
+# NB avg, data_trunc, round, count are only needed for Visual 3
 5. **Explain** that here we are:
    - Keeping the `Pandas` library which is used for data analysis
    - Importing the `Matplotlib` library which is used for data visualisation (you may have to add this as a Package using the `Packages` tab at the top
