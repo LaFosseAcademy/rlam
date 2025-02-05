@@ -555,6 +555,7 @@ calculate_monthly_average_pandas(fx_data)
       - If we didn't do this then each unique RATE_DATE (e.g., 2024-01-01, 2024-01-02) becomes its own group. Instead of grouping all rows from 2024-01, 2024-02, etc. together, it treats each day as a separate group.
       - We then select the column that we want to perform the `mean()` on i.e. FX_RATE_BASE_CURRENCY
       - reset_index then converts the grouped result back into a regular DataFrame, moving the group (month) from the index to a column, i.e. a row for each month
+      - **SUMMARY** The DataFrame starts as spread-out raw dough (detailed daily data) → gets cut, compressed, and shaped (grouping & averaging) → then organized neatly on a plate (resetting the index into a readable table).
    - We then `rename columns`
    - Sort by the period
    - return the function
