@@ -457,6 +457,7 @@ plt.xticks(rotation=45)
 plt.show()
 ```
 **ONLY DO THIS IF THERE IS TIME**
+
 11. **Explain** that we could refine this even further by using some of our knowledge of string methods and variables
 12. **Highlight** that we're accessing the data from the previous cell and using string methods to take out the '_'
 13. **Highlight** we could also use `Title` if we wanted to...
