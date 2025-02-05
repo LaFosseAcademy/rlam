@@ -4,8 +4,7 @@
 This course has been designed to give RLAM employees an overview of Python and how it
 can be used with Snowflake to sort, analyse, and visualise data. By the end of the session,
 trainees should be able to access data using Snowflake and perform queries on that data
-which enable them to effectively work with the data set. They should also be able to use the
-Charts functionality on Snowflake to visualise that data. Finally, they will be able to use
+which enable them to effectively work with the data set. They will be also able to use
 Matplotlib to refine their visualisations.
 
 1. Introduction
@@ -16,10 +15,6 @@ Matplotlib to refine their visualisations.
    - Python
    - Matplotlib
 5. Visual 2
-   - SQL
-   - Python
-   - Matplotlib
-6. Visual 3
    - SQL
    - Python
    - Matplotlib
@@ -334,12 +329,11 @@ SELECT * FROM FXRATE
 ```
 8. **Talk** trainees through the data - focusing on the size of the set, the fact that some information appears to be more useful than other information etc.
 9. **Explain** that, SQL is really useful to 'trim the fat' off big data sets in particular, so, what we're going to do is use it to get our data set trimmed down to something that we can work with more easily
-10. **Remind** trainees that we're going to build 3 bits of data analysis and visuals:
-   - Analysing the most frequent currency against which base currency is measured
-   - Analysing the rate of exchange between GBP and USD across a month
-   - Analysis of the performance of the USD against four other currencies between 2022-24
+10. **Remind** trainees that we're going to build 2 bits of data analysis and visuals:
+   - Analysing GBP to USD Exchange Rates over 2024
+   - Plotting the monthly average GBP to USD Exchange Rate over the same period
 
-## VISUAL 1 - Analysing the most frequent currency against which base currency is measured
+## VISUAL 1 - Analysing GBP to USD Exchange Rates over 2024
 ### VISUAL 1 - The Data
 1.. **Explain** that we're going to construct our code in a new **Python** cell.
 
@@ -367,45 +361,41 @@ session = get_active_session()
 ```
 # Visual 1 
 fx_data = session.sql("""
-    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
-    FROM fxrate
+    SELECT * FROM FXRATE
+    WHERE RATE_DATE BETWEEN '2024-01-01' AND '2024-12-31'
 """)
 ```
 7. **Explain** that we're injecting some SQL into the Python file here to start us off in narrowing down our query.
-8. **Explain** that we're storing that SQL in a `variable` called `starter` - we're now going to call on that variable and manipulate it
+8. **Explain** that we're storing that SQL in a `variable` called `fx_data` - we're now going to call on that variable and manipulate it
 9. **Adapt** the main cell as follows:
 ```
-# Visual 1 
+# Visual 1
 fx_data = session.sql("""
-    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
-    FROM fxrate
+    SELECT * FROM FXRATE
+    WHERE RATE_DATE BETWEEN '2024-01-01' AND '2024-12-31'
 """)
 
-def frq(): 
-    quote_curr = (
+def gbp_usd_24():
+    yearly_rate = (
         fx_data
-        .group_by('quote_currency')
-        .agg(count('*').alias('frequency'))
-        .sort(col('frequency'), ascending=False)
-        .limit(10)
-    )
-
-    return quote_curr
-
-frq()
+        .filter(
+            (col("FX_RATE_DESCRIPTION") == "SPOT") &
+            (col("CURRENCY_PAIR") == "GBPUSD") 
+        )
+        .orderBy(col("RATE_DATE").asc())
+        )
+    return yearly_rate
+gbp_usd_24()
 ```
 10. **Take** trainees through the above, line-by-line:
-   - First we create a variable `quote_curr`
-   - Then we use our SQL variable `starter`
-   - For Python queries we will use some of the methods that Snowflake has available - in this case it will be `group_by` (we want to collate information), then we pass which column we want to group `quote_currency`
-   - After `group_by`, we use `agg` and `count`
-   - `count` is a Snowpark function that was imported in `cell 1`
-   - `count` will count all '*' quote_currency and will aggregate all of them
-   - Then we create an `alias` called `frequency`, that will became a new column with the `agg()` values
-   - We use the `sort` method to sort our col (another Snowpark function) frequency and we want it to show from the most `quote_currency` used to the least `(ascending=False)`
-   - The last section of the function is a limit of 10 - we'll need this in order to prevent the resultant visual being overpopulated
+   - First we outline the Python function
+   - Then we create a variable `yearly_rate`
+   - Then we use our SQL variable `fx_data`
+   - For Python queries we will use some of the methods that Snowflake has available - in this case it will be `filter` (we want to further refine our dataset)
+   - We could, of course, have filtered this in the SQL command - initially I'm just demonstrating that we could do this with Python as well
+   - We're then going to apply our second method `orderBy` and we're going to select the appropriate column which we need to order, and the direction
    - Finally we have to `return` the data and call the function
-11. **Run** the above - demonstrate that we have a ten row table - who had guessed that Gold (XAU) was going to be the currency against which currencies were most frequently compared?
+11. **Run** the above - demonstrate that we have a table with only the SPOT data for each day held within it
 
 ### VISUAL 1 - The Visual
 1. **Explain** that, now that we have the data - we're going to do something with it
