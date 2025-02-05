@@ -24,3 +24,32 @@
 - GRAPH 1 - GBPUSD over 2024 - line?
 - GRAPH 2 - GBPUSD monthly avg - plot?
 - GRAPH 3 - currency compare - send through
+
+## Code block to demonstrate utilising string methods/variables if needed
+
+11. **Explain** that we could refine this even further by using some of our knowledge of string methods and variables
+12. **Highlight** that we're accessing the data from the previous cell and using string methods to take out the '_'
+13. **Highlight** we could also use `Title` if we wanted to...
+14. **Show** what happens when we just alter `axis_font` in the `variables` at the top
+```
+# Visual 1 - Show Data
+my_df = cell4.to_pandas()
+
+quote_curr = my_df['QUOTE_CURRENCY']
+frq = my_df['FREQUENCY']
+x_label = my_df.columns[0].title().replace('_', ' ')
+y_label = my_df.columns[1].title()
+axis_font = 12
+
+plt.figure(figsize=(10, 5))
+plt.bar(quote_curr, frq, color='seagreen', edgecolor='black', linewidth=0.5, width=0.7)
+plt.title('10 Top Quote Currency Frequency', fontsize=14, fontweight='bold')
+plt.xlabel(x_label, fontsize=axis_font)
+plt.ylabel(y_label, fontsize=axis_font)
+plt.ylim(33000, 34000)
+
+plt.grid(axis='y', linestyle='-', alpha=0.1)
+plt.xticks(rotation=45)
+
+plt.show()
+```
