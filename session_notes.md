@@ -507,8 +507,9 @@ fx_data = session.sql("""
 fx_data.show()
 ```
 3. **Talk through** the above - point out that we're using `WHERE` and `BETWEEN` and `AND` to narrow down our data set
-4. **Explain** that, as we did previously, we're going to use Python to refine our data
-5. **First** let's refine our selection by starting to write our function:
+4. **Explain** that - at this stage - the data is in **Snowpark** in a **Snowpark Dataframe**
+5. **Explain** that, as we did previously, we're going to use Python to refine our data
+6. **First** let's refine our selection by starting to write our function:
 ```
 # Visual 2
 fx_data = session.sql("""
@@ -542,9 +543,10 @@ def calculate_monthly_average_pandas(fx_data):
 calculate_monthly_average_pandas(fx_data)
 ```
 7. **Walk through** the above, step-by-step:
-   - We create a new variable `calculate_monthly_average_pandas(fx_data)` - we're passing our data into this
-   - Convert Spark DataFrame to Pandas DataFrame in order to enable us to manipulate numbers - here, important to reiterate why use Pandas - we're not using them to their full capability here, rather we're getting set up for use further down the line. We did this in the visualisation section before - here, we're just doing it off the bat.
+   - We create a new variable `calculate_monthly_average_pandas(fx_data)` - we're passing our data into this.
+   - Convert Spark DataFrame to Pandas DataFrame in order to enable us to manipulate numbers - here, important to reiterate why use Pandas - we're not using them to their full capability here, rather we're getting set up for use further down the line. We did this in the visualisation section before - here, we're just doing it off the bat. The data is now a **Pandas DataFrame**, meaning the data has been loaded from Snowflake into Python’s memory.
    - After this point, we're working on our `monthly_avg` function.
+      - Switch to [Powerpoint](https://lafosseassociatesltd-my.sharepoint.com/:p:/g/personal/simon_clemson_lafosse_com/ER0cDtnNfSdPjxFNewsgJn4BazhYno7btNg56SjEt1BvEg?e=Pg2LAn) to explain what's happening to the data
       - Group by formatted month string and calculate the average rate in each month. 
       - We are creating a series here (imagine one column in a table). We're then returning this to a dataframe.
       - If we didn't do this then each unique RATE_DATE (e.g., 2024-01-01, 2024-01-02) becomes its own group. Instead of grouping all rows from 
