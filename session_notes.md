@@ -555,41 +555,6 @@ calculate_monthly_average_pandas(fx_data)
    - Sort by the period
    - return the function
 
-# Visual 2
-fx_data = session.sql("""
-    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
-    FROM fxrate
-    WHERE currency_pair = 'USDGBP'
-    AND rate_date 
-    BETWEEN '2024-01-01' AND '2024-01-31'
-""")
-
-def exchange_rate():
-    daily_avg = (
-        fx_data
-        .select(
-            col('base_currency'),
-            col('currency_pair'),
-            col('fx_rate_base_currency'),
-            date_trunc('DAY', col('rate_date')).alias('rate_day')
-        )
-        .group_by("base_currency", "currency_pair", "rate_day")
-        .agg(round(avg("fx_rate_base_currency"), 3).alias("daily_avg_rate"))
-        .sort("rate_day")
-    )
-
-    return daily_avg
-
-exchange_rate()
-```
-9. **Explain** the extra bits:
-   - Here we are using `group_by`, which organizes the data into groups based on these specified columns
-   - `agg` performs an aggregation on the grouped data to calculate the average of the fx_rate_base_currency column for each group
-   - The `round()` Snowpark function ensures the average value is rounded to 3 decimal places for precision
-   - And the resulting column is renamed to `daily_avg_rate` using the `alias` method
-   - We then use `sort` to put results in ascending order
-10. **Run** the `cell` and point out that each date now has one, aggregated piece of data which should make visualisation much clearer
-
 ### VISUAL 2 - The Visual
 1. **Explain** that, as before, we're going to use a new cell to work with `Matplotlib`
 2. **Ask** trainees if they can remember what the first things we did last time were
@@ -597,56 +562,46 @@ exchange_rate()
 4. **Start** the **Python** code block off:
 ```
 # Visual 2 - The Visual
-my_df = cell4.to_pandas()
+my_df = GBP_USD_monthly_avg
 
-rate_day = my_df['RATE_DAY']
-daily_avg = my_df['DAILY_AVG_RATE']
+months = my_df['Month']  # Second column: Month names
+rates = my_df['Average Rate']  # Third column: Rates
 ```
 5. **Point out** that we need to store our intended pieces of data for the `x-axis` and `y-axis` as our variables
-6. **Explain** that we're going to use a `stack plot` here to showcase our data
+6. **Explain** that we're going to use a plot here to showcase our data but we're going to add markers in
 7. **Edit** the cell as follows:
 ```
-my_df = cell4.to_pandas()
+my_df = GBP_USD_monthly_avg
 
-rate_day = my_df['RATE_DAY']
-daily_avg = my_df['DAILY_AVG_RATE']
+months = my_df['Month']  # Second column: Month names
+rates = my_df['Average Rate']  # Third column: Rates
 
-plt.figure(figsize=(10, 5))
-plt.stackplot(rate_day, daily_avg, color='none', edgecolor='blue', linewidth=1)
-plt.title('USD to GBP Rates January 2024', fontsize=14, fontweight='bold')
-plt.xlabel('Date', fontsize=12)
-plt.ylabel('Rate', fontsize=12)
+# Plot the data
+plt.plot(months, rates, marker='o')  # Line plot with markers
 
-plt.grid(axis='y', linestyle='-', alpha=0.1)
+# Add titles and labels
+plt.title('Monthly Average Exchange Rates - 2024', fontsize=16)
+plt.xlabel('Month', fontsize=12)
+plt.ylabel('Average Exchange Rate', fontsize=12)
+
+# Rotate x-axis labels for better readability
 plt.xticks(rotation=45)
 
+# Show grid for better visualization
+plt.grid(True, linestyle='--', alpha=0.7)
+
+# Display the plot
+plt.tight_layout()  # Adjust layout to prevent clipping of labels
 plt.show()
 ```
 8. **Demonstrate** each line - focussing on `title`, `labels` etc.
-9. **Run** the resultant graph. You should get something with an inappropriate scale on the `y-axis` and which has a 'gap' at the start and end of the data
-10. **Alter** the code:
-```
-my_df = cell4.to_pandas()
+9. **Run** the resultant graph:
+![chart_2](./assets/Monthly_avg.png)
+10. Point out that, again - we could trim etc. if we wanted.
 
-rate_day = my_df['RATE_DAY']
-daily_avg = my_df['DAILY_AVG_RATE']
+## END OF SESSION - Q & A
 
-plt.figure(figsize=(10, 5))
-plt.stackplot(rate_day, daily_avg, color='none', edgecolor='blue', linewidth=1)
-plt.title('USD to GBP Rates January 2024', fontsize=14, fontweight='bold')
-plt.xlabel('Date', fontsize=12)
-plt.ylabel('Rate', fontsize=12)
-plt.xlim(pd.Timestamp('2024-01-01'), pd.Timestamp('2024-01-31'))
-plt.ylim(0.77, 0.8)
-
-plt.grid(axis='y', linestyle='-', alpha=0.1)
-plt.xticks(rotation=45)
-
-plt.show()
-```
-11. **Point out** that we are using `xlim` and `ylim` to trim our graph and make it more straightforward to read
-12. **Display** the visual:
-![chart_2](./assets/mpl_chart_2.png)
+### Below is code for an additional visual if time.
 
 ## VISUAL 3 - Analysis of the performance of the USD against four other currencies between 2022-24
 ### VISUAL 3 - The Data
