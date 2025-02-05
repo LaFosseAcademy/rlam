@@ -547,12 +547,14 @@ calculate_monthly_average_pandas(fx_data)
    - Convert Spark DataFrame to Pandas DataFrame in order to enable us to manipulate numbers - here, important to reiterate why use Pandas - we're not using them to their full capability here, rather we're getting set up for use further down the line. We did this in the visualisation section before - here, we're just doing it off the bat. The data is now a **Pandas DataFrame**, meaning the data has been loaded from Snowflake into Python’s memory.
    - After this point, we're working on our `monthly_avg` function.
       - Switch to [Powerpoint](https://lafosseassociatesltd-my.sharepoint.com/:p:/g/personal/simon_clemson_lafosse_com/ER0cDtnNfSdPjxFNewsgJn4BazhYno7btNg56SjEt1BvEg?e=Pg2LAn) to explain what's happening to the data
-      - Group by formatted month string and calculate the average rate in each month. 
+      - We need to manipulate the Dataframe.
+         - A normal table has individual rows: Each row represents a single day's exchange rate.
+         - When grouped by formatted month string, Pandas creates "groups" of rows (see Slide 6), it's doing this so it can handle the data more easily
+      - It will then calculate the average rate in each month. 
       - We are creating a series here (imagine one column in a table). We're then returning this to a dataframe.
-      - If we didn't do this then each unique RATE_DATE (e.g., 2024-01-01, 2024-01-02) becomes its own group. Instead of grouping all rows from 
-      - 2024-01, 2024-02, etc. together, it treats each day as a separate group.
-      - We then select the column that we want to perform the aggregation on i.e. FX_RATE_BASE_CURRENCY
-      - reset_index then converts the grouped result back into a regular DataFrame, moving the group (month) from the index to a column.
+      - If we didn't do this then each unique RATE_DATE (e.g., 2024-01-01, 2024-01-02) becomes its own group. Instead of grouping all rows from 2024-01, 2024-02, etc. together, it treats each day as a separate group.
+      - We then select the column that we want to perform the `mean()` on i.e. FX_RATE_BASE_CURRENCY
+      - reset_index then converts the grouped result back into a regular DataFrame, moving the group (month) from the index to a column, i.e. a row for each month
    - We then `rename columns`
    - Sort by the period
    - return the function
