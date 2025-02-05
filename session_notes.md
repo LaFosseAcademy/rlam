@@ -484,6 +484,7 @@ plt.grid(axis='y', linestyle='-', alpha=0.1)
 plt.xticks(rotation=45)
 
 plt.show()
+```
 14. **Display** the visual:
 ![chart_1](./assets/GBP_USD_24.png)
 
@@ -554,7 +555,6 @@ calculate_monthly_average_pandas(fx_data)
    - Sort by the period
    - return the function
 
-```
 # Visual 2
 fx_data = session.sql("""
     SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
