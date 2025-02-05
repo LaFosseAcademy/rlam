@@ -456,9 +456,9 @@ plt.xticks(rotation=45)
 
 plt.show()
 ```
-**ONLY DO THIS IF THERE IS TIME**
+**ONLY DO THIS EXTRA SECTION ON VISUAL 1 IF THERE IS TIME**
 
-11. **Explain** that we could refine this even further by using some of our knowledge of string methods and variables
+11. **Explain** that we could refine this even further by using some of our knowledge of string methods and variables - this is useful to think about if you're working on multiple visuals and you wanted to ensure uniformity across them
 12. **Highlight** that we're accessing the data from the previous cell and using string methods to take out the '_'
 13. **Highlight** we could also use `Title` if we wanted to...
 14. **Show** what happens when we just alter `axis_font` in the `variables` at the top
@@ -487,61 +487,73 @@ plt.show()
 14. **Display** the visual:
 ![chart_1](./assets/GBP_USD_24.png)
 
-## VISUAL 2 - Analysing the rate of exchange between GBP and USD across a month
+## VISUAL 2 - Plotting the monthly average GBP to USD Exchange Rate over 2024
 ### VISUAL 2 - The Data
 1. **Explain** that we're going to go through the same process for other visuals, bringing more detail in.
 2. **Create** a new **Python** cell. **Ask** trainees what we started off with last time and **congratulate** the volunteer who mentions selecting the data using SQL:
 ```
 # Visual 2
 fx_data = session.sql("""
-    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
-    FROM fxrate
-    WHERE currency_pair = 'USDGBP'
-    AND rate_date 
-    BETWEEN '2024-01-01' AND '2024-01-31'
+    SELECT 
+        RATE_DATE,
+        FX_RATE_BASE_CURRENCY
+    FROM FXRATE
+    WHERE RATE_DATE BETWEEN '2024-01-01' AND '2024-12-31'
+    AND FX_RATE_DESCRIPTION = 'SPOT' 
+    AND CURRENCY_PAIR = 'GBPUSD'
 """)
 
-starter.show()
+fx_data.show()
 ```
-3. **Talk through** the above - point out that we're using `WHERE` and `BETWEEN` to narrow down our data set
-4. **Run** the result - **highlight** that, whilst useful, there appear to be multiple entries next to each day in January from the same time - if we visualised this, this might get confusing
-5. **Explain** that, as we did previously, we're going to use Python to refine our data
-6. **First** let's refine our selection by starting to write our function:
+3. **Talk through** the above - point out that we're using `WHERE` and `BETWEEN` and `AND` to narrow down our data set
+4. **Explain** that, as we did previously, we're going to use Python to refine our data
+5. **First** let's refine our selection by starting to write our function:
 ```
 # Visual 2
 fx_data = session.sql("""
-    SELECT base_currency, currency_pair, fx_rate_base_currency, quote_currency, rate_date,
-    FROM fxrate
-    WHERE currency_pair = 'USDGBP'
-    AND rate_date 
-    BETWEEN '2024-01-01' AND '2024-01-31'
+    SELECT 
+        RATE_DATE,
+        FX_RATE_BASE_CURRENCY
+    FROM FXRATE
+    WHERE RATE_DATE BETWEEN '2024-01-01' AND '2024-12-31'
+    AND FX_RATE_DESCRIPTION = 'SPOT' 
+    AND CURRENCY_PAIR = 'GBPUSD'
 """)
-
-def exchange_rate():
-    daily_avg = (
-        fx_data
-        .select(
-            col('base_currency'),
-            col('currency_pair'),
-            col('fx_rate_base_currency'),
-            date_trunc('DAY', col('rate_date')).alias('rate_day')
-        )
+ 
+def calculate_monthly_average_pandas(fx_data):
+ 
+    fx_data_pd = fx_data.toPandas()
+    
+    monthly_avg = (
+        fx_data_pd
+        .groupby(fx_data_pd['RATE_DATE'].dt.to_period('M'))['FX_RATE_BASE_CURRENCY']
+        .mean()
+        .reset_index()
     )
-
-    return daily_avg
-
-exchange_rate()
+ 
+    # Rename columns for clarity in the table
+    monthly_avg.columns = ['Month', 'Average Rate']
+ 
+    # Sort by the period (already chronological) and format for readability using datetime's string format
+    monthly_avg['Month'] = monthly_avg['Month'].dt.strftime('%B')
+    return monthly_avg
+ 
+calculate_monthly_average_pandas(fx_data)
 ```
 7. **Walk through** the above, step-by-step:
-   - We create a new variable `daily_avg`
-   - Then we use our SQL query `starter` and use the `select` method
-   - For this query we are selecting three columns: `base_currency`, `currency_pair` and `fx_rate_base_currency`
-   - Make sure to use the `col` function, so Python (Snowpark) knows that we are referencing columns
-   - Then we use another Snowpark function called `date_trunc`
-   - `date_trunc` is commonly used for grouping data by specific date units, in this case we want to group by `DAY` - remember, we are using `DAY` because there is many occurrences throughout the day and we want to make sure it only shows one day at the time
-    - Then we pass from which column this date is coming from col('rate_date')
-    - Finally we use an alias to make it simple to understand: `rate_day`
-8. **Explain** that we still need to refine this further...
+   - We create a new variable `calculate_monthly_average_pandas(fx_data)` - we're passing our data into this
+   - Convert Spark DataFrame to Pandas DataFrame in order to enable us to manipulate numbers - here, important to reiterate why use Pandas - we're not using them to their full capability here, rather we're getting set up for use further down the line. We did this in the visualisation section before - here, we're just doing it off the bat.
+   - After this point, we're working on our `monthly_avg` function.
+      - Group by formatted month string and calculate the average rate in each month. 
+      - We are creating a series here (imagine one column in a table). We're then returning this to a dataframe.
+      - If we didn't do this then each unique RATE_DATE (e.g., 2024-01-01, 2024-01-02) becomes its own group. Instead of grouping all rows from 
+      - 2024-01, 2024-02, etc. together, it treats each day as a separate group.
+      - We then select the column that we want to perform the aggregation on i.e. FX_RATE_BASE_CURRENCY
+      - reset_index then converts the grouped result back into a regular DataFrame, moving the group (month) from the index to a column.
+   - We then `rename columns`
+   - Sort by the period
+   - return the function
+
 ```
 # Visual 2
 fx_data = session.sql("""
