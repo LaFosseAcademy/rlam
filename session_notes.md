@@ -420,7 +420,7 @@ my_df = GBPUSD_data.to_pandas()
 rate_day = my_df['RATE_DATE']
 fx_rate = my_df['FX_RATE_BASE_CURRENCY']
 
-plt.plot(rate_day, fx_rate , color='none', linewidth=1)
+plt.plot(rate_day, fx_rate , color='blue', linewidth=1)
 plt.title('GBP to USD Rates 2024', fontsize=14, fontweight='bold')
 plt.xlabel('Date', fontsize=12)
 plt.ylabel('Rate', fontsize=12)
