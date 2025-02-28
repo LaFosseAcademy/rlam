@@ -560,7 +560,7 @@ calculate_monthly_average_pandas(fx_data)
       - reset_index then converts the grouped result back into a regular DataFrame, moving the group (month) from the index to a column, i.e. a row for each month
       - **SUMMARY** The DataFrame starts as spread-out raw dough (detailed daily data) → gets cut, compressed, and shaped (grouping & averaging) → then organized neatly on a plate (resetting the index into a readable table).
    - We then `rename columns`
-   - Sort by the period
+   - Sort by the period (by converting the datetime objects in the Pandas Series to a specified date format) - you could alter to `('%B' ' ' '%Y')` if you wanted it to say, for example, `January 2024`
    - return the function
 
 ### VISUAL 2 - The Visual
