@@ -226,7 +226,8 @@ print(date)
 6. **Explain** what we're doing here - we're initially **creating** a `Timestamp` (a Pandas version of a date) - we're then extracting the data from this. Learning to construct a datetime object using (year, month, day) helps us understand the structure of the datetime class and its parameters. By manually specifying these values, we get a feel for how the datetime module organizes and manages date and time data.
 7. **Explain** that in real-world scenarios, we often need to work with specific, fixed dates—such as scheduling an event, analysing historical data, or creating test cases for code that involves dates.
 8. **Alter** the code to demonstrate what we can do with it:
-   - `year` - for just the year
+   - `year` - for just the year 
+      i.e. `print(date.year)`
    - `month` - for just the month
    - `date.day` - for the date (you can access month by using `date.month` as well)
    - I could also pass two `arguments` in - e.g. `date.day, month`
@@ -446,7 +447,7 @@ my_df = GBPUSD_data.to_pandas()
 rate_day = my_df['RATE_DATE']
 fx_rate = my_df['FX_RATE_BASE_CURRENCY']
 
-plt.plot(rate_day, fx_rate , color='none', linewidth=1)
+plt.plot(rate_day, fx_rate , color='blue', linewidth=1)
 plt.title('GBP to USD Rates 2024', fontsize=14, fontweight='bold')
 plt.xlabel('Date', fontsize=12)
 plt.ylabel('Rate', fontsize=12)
