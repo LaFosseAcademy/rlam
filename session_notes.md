@@ -407,7 +407,7 @@ gbp_usd_24()
 4. **Go back** to our **Notebook** and create a new **Python** cell:
 ```
 # Visual 1 - Get and Store Data
-my_df = GBPUSD_data.to_pandas()
+my_df = GBPUSD_data.toPandas()
 
 rate_day = my_df['RATE_DATE']
 fx_rate = my_df['FX_RATE_BASE_CURRENCY']
@@ -416,7 +416,7 @@ fx_rate = my_df['FX_RATE_BASE_CURRENCY']
 6. **Demonstrate** that we're then going to use `Matplotlib` to create a chart based on that data. To do this, we're just going to use a `code block` like the ones we just saw on the documentation:
 ```
 # Visual 1 - Show Data
-my_df = GBPUSD_data.to_pandas()
+my_df = GBPUSD_data.toPandas()
 
 rate_day = my_df['RATE_DATE']
 fx_rate = my_df['FX_RATE_BASE_CURRENCY']
@@ -646,7 +646,7 @@ comp_usd()
 
 ### VISUAL 3 - The Visual
 ```
-my_df = VISUAL_3_DATA.to_pandas()
+my_df = VISUAL_3_DATA.()
 
 import matplotlib.pyplot as plt
 
