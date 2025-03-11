@@ -442,7 +442,7 @@ plt.show()
 10. **Alter** the code:
 ```
 # Visual 1 - Show Data
-my_df = GBPUSD_data.to_pandas()
+my_df = GBPUSD_data.toPandas()
 
 rate_day = my_df['RATE_DATE']
 fx_rate = my_df['FX_RATE_BASE_CURRENCY']
@@ -478,8 +478,8 @@ y_label = my_df.columns[2].title().replace('_', ' ')
 
 plt.plot(rate_day, fx_rate , color='blue', linewidth=1)
 plt.title('GBP to USD Rates 2024', fontsize=14, fontweight='bold')
-plt.xlabel(x_label, axis_font)
-plt.ylabel(y_label, axis_font)
+plt.xlabel(x_label, fontsize=axis_font)
+plt.ylabel(y_label, fontsize=axis_font)
 plt.xlim(pd.Timestamp('2024-01-01'), pd.Timestamp('2024-11-15'))
 plt.ylim(1.2, 1.4)
 
